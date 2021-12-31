@@ -1,0 +1,43 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "askForPassword": true,
+      "driver": "MySQL",
+      "name": "test",
+      "database": "fitness",
+      "username": "root"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "remotemysql.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "remotedb",
+      "username": "tcP1cKeUYY",
+      "password": "enybHYN44T",
+      "database": "tcP1cKeUYY"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "lab-hcis.mysql.database.azure.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "Lab_DB",
+      "username": "lab_admin@lab-hcis",
+      "database": "MySql",
+      "password": "tamerbasha.2024"
+    }
+  ]
+}
