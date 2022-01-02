@@ -37,10 +37,6 @@ def Forgot_login():
 def Add_consumables():
    return render_template('Add_consumables.html')
 
-@app.route('/test')
-def test():
-   return render_template('test.html')
-
 @app.route('/Lab_guide')
 def Lab_guide():
    return render_template('Lab_guide.html')
