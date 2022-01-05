@@ -16,8 +16,7 @@ mycursor = mydb.cursor()
 
 #Creating Lab Tech table
 ##mycursor.execute("CREATE TABLE Lab_Technician (SSN VARCHAR(255) NOT NULL, First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, SEX ENUM('male', 'female') NOT NULL, Birthdate DATE NOT NULL, Salary INT NOT NULL, Email VARCHAR(255) NOT NULL, Address TEXT NOT NULL, Manager_SSN VARCHAR(255) NOT NULL, PRIMARY KEY(SSN), FOREIGN KEY (Manager_SSN) REFERENCES Employee(SSN))")
-#Creating LabTechAddress table
-##mycursor.execute("CREATE TABLE LabTechAddress (LabTechSSN VARCHAR(255) NOT NULL, Address VARCHAR(255) NOT NULL,PRIMARY KEY(LabTechSSN, Address), FOREIGN KEY (LabTechSSN) REFERENCES Lab_Technician(SSN))")
+
 #Creating LabTechQualifications table
 ##mycursor.execute("CREATE TABLE LabTechQualifications (LabTechSSN VARCHAR(255) NOT NULL, Qualifications VARCHAR(255) NOT NULL,PRIMARY KEY(LabTechSSN, Qualifications), FOREIGN KEY (LabTechSSN) REFERENCES Lab_Technician(SSN))")
 #Creating LabTechPhoneNumber table
