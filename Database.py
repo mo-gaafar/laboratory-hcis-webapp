@@ -53,12 +53,12 @@ mycursor = mydb.cursor()
 ##mycursor.execute("CREATE TABLE Report (ReportID INT NOT NULL, Name VARCHAR(255) NOT NULL, Publish_Date DATE NOT NULL, Referred_By VARCHAR(255) NOT NULL, Comments TEXT , Patient_SSN VARCHAR(255) NOT NULL, PRIMARY KEY(ReportID), FOREIGN KEY ( Patient_SSN) REFERENCES Patient(SSN))")
 
 #Creating Dependents_Employee table
-##mycursor.execute("CREATE TABLE Dependents_Employee(Dependent_SSN VARCHAR(255) NOT NULL, ESSN VARCHAR(255) , First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, Birthdate DATE NOT NULL, Address TEXT NOT NULL, Relationship VARCHAR(255) NOT NULL, PRIMARY KEY(Dependent_SSN, ESSN), FOREIGN KEY (ESSN) REFERENCES Employee(SSN))")
+##mycursor.execute("CREATE TABLE Dependents_Employee(Dependent_SSN VARCHAR(255) NOT NULL, ESSN VARCHAR(255) , First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL,  SEX ENUM('male', 'female') NOT NULL,Birthdate DATE NOT NULL, Address TEXT NOT NULL, Relationship VARCHAR(255) NOT NULL, PRIMARY KEY(Dependent_SSN, ESSN), FOREIGN KEY (ESSN) REFERENCES Employee(SSN))")
 #Creating DependentsEmpPhoneNumber table
 ##mycursor.execute("CREATE TABLE DependentsEmpPhoneNumber (DependentSSN VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL,PRIMARY KEY(DependentSSN, PhoneNumber), FOREIGN KEY (DependentSSN) REFERENCES Dependents_Employee(Dependent_SSN))")
 
 #Creating Dependents_LabTech table
-##mycursor.execute("CREATE TABLE Dependents_LabTech(Dependent_SSN VARCHAR(255) NOT NULL, Lab_Tech_SSN VARCHAR(255) , First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, Birthdate DATE NOT NULL, Address TEXT NOT NULL, Relationship VARCHAR(255) NOT NULL, PRIMARY KEY(Dependent_SSN, Lab_Tech_SSN), FOREIGN KEY (Lab_Tech_SSN) REFERENCES Lab_Technician(SSN))")
+##mycursor.execute("CREATE TABLE Dependents_LabTech(Dependent_SSN VARCHAR(255) NOT NULL, Lab_Tech_SSN VARCHAR(255) , First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, SEX ENUM('male', 'female') NOT NULL ,Birthdate DATE NOT NULL, Address TEXT NOT NULL, Relationship VARCHAR(255) NOT NULL, PRIMARY KEY(Dependent_SSN, Lab_Tech_SSN), FOREIGN KEY (Lab_Tech_SSN) REFERENCES Lab_Technician(SSN))")
 #Creating DependentsLabTechPhoneNumber table
 ##mycursor.execute("CREATE TABLE DependentsLabTechPhoneNumber (DependentSSN VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL,PRIMARY KEY(DependentSSN, PhoneNumber), FOREIGN KEY (DependentSSN) REFERENCES Dependents_LabTech(Dependent_SSN))")
 
@@ -76,4 +76,4 @@ mycursor = mydb.cursor()
 ##mycursor.execute("CREATE TABLE Conducts (LabTechSSn VARCHAR(255) NOT NULL, TestID INT NOT NULL,PRIMARY KEY(LabTechSSn, TestID), FOREIGN KEY (LabTechSSn) REFERENCES Lab_Technician(SSN), FOREIGN KEY (TestID) REFERENCES Test(Test_ID))")
 
 #Creating User table
-##mycursor.execute("CREATE TABLE User (User_SSN VARCHAR(255) NOT NULL, Username VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, Permission_Level INT NOT NULL, Email VARCHAR(255) NOT NULL, PatientSSN VARCHAR(255) , LabTechSSN VARCHAR(255) , EmpSSN VARCHAR(255) , PRIMARY KEY(User_SSN), FOREIGN KEY (PatientSSN) REFERENCES Patient(SSN), FOREIGN KEY (LabTechSSn) REFERENCES Lab_Technician(SSN), FOREIGN KEY (EmpSSN) REFERENCES Employee(SSN))")
+##mycursor.execute("CREATE TABLE User (User_SSN VARCHAR(255) NOT NULL, Username VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, Permission_Level ENUM('admin', 'employee','labtechnician', 'patient') NOT NULL, Email VARCHAR(255) NOT NULL, PatientSSN VARCHAR(255) NULL, LabTechSSN VARCHAR(255) NULL, EmpSSN VARCHAR(255) NULL, PRIMARY KEY(User_SSN), FOREIGN KEY (PatientSSN) REFERENCES Patient(SSN), FOREIGN KEY (LabTechSSn) REFERENCES Lab_Technician(SSN), FOREIGN KEY (EmpSSN) REFERENCES Employee(SSN))")
