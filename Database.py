@@ -18,14 +18,14 @@ mycursor = mydb.cursor()
 ##mycursor.execute("CREATE TABLE Lab_Technician (SSN VARCHAR(255) NOT NULL, First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, SEX ENUM('male', 'female') NOT NULL, Birthdate DATE NOT NULL, Salary INT NOT NULL, Email VARCHAR(255) NOT NULL, Address TEXT NOT NULL, Manager_SSN VARCHAR(255) NOT NULL, PRIMARY KEY(SSN), FOREIGN KEY (Manager_SSN) REFERENCES Employee(SSN))")
 
 #Creating LabTechQualifications table
-##mycursor.execute("CREATE TABLE LabTechQualifications (LabTechSSN VARCHAR(255) NOT NULL, CV BLOB NOT NULL,PRIMARY KEY(LabTechSSN, Qualifications), FOREIGN KEY (LabTechSSN) REFERENCES Lab_Technician(SSN))")
+##mycursor.execute("CREATE TABLE LabTechQualifications (LabTechSSN VARCHAR(255) NOT NULL, CV BLOB NOT NULL,PRIMARY KEY(LabTechSSN, CV), FOREIGN KEY (LabTechSSN) REFERENCES Lab_Technician(SSN))")
 #Creating LabTechPhoneNumber table
 ##mycursor.execute("CREATE TABLE LabTechPhoneNumber (LabTechSSN VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL,PRIMARY KEY(LabTechSSN, PhoneNumber), FOREIGN KEY (LabTechSSN) REFERENCES Lab_Technician(SSN))")
 
 #Creating Employee table
 ##mycursor.execute("CREATE TABLE Employee (SSN VARCHAR(255) NOT NULL, ID INT NOT NULL, First_Name VARCHAR(255) NOT NULL, Middle_Name VARCHAR(255) NOT NULL, Last_Name VARCHAR(255) NOT NULL, SEX ENUM('male', 'female') NOT NULL, Birthdate DATE NOT NULL, Salary INT NOT NULL, Email VARCHAR(255) NOT NULL, Address TEXT NOT NULL, Supervisor_SSN VARCHAR(255) , PRIMARY KEY(SSN), FOREIGN KEY ( Supervisor_SSN) REFERENCES Employee(SSN))")
 #Creating EmployeeQualifications table
-##mycursor.execute("CREATE TABLE EmployeeQualifications (EmployeeSSN VARCHAR(255) NOT NULL, CV BLOB NOT NULL,PRIMARY KEY(EmployeeSSN, Qualifications), FOREIGN KEY (EmployeeSSN) REFERENCES Employee(SSN))")
+##mycursor.execute("CREATE TABLE EmployeeQualifications (EmployeeSSN VARCHAR(255) NOT NULL, CV BLOB NOT NULL,PRIMARY KEY(EmployeeSSN, CV), FOREIGN KEY (EmployeeSSN) REFERENCES Employee(SSN))")
 #Creating EmployeePhoneNumber table
 ##mycursor.execute("CREATE TABLE EmployeePhoneNumber (EmployeeSSN VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL,PRIMARY KEY(EmployeeSSN, PhoneNumber), FOREIGN KEY (EmployeeSSN) REFERENCES Employee(SSN))")
 
