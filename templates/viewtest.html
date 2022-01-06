@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Laboratory Tests</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container mt-2-fluid">
+        <h1>View Laboratory Tests</h1>
+    </div>
+  
+
+  <div class="container">
+    <form class="form">
+      <div class="form__group">
+        <label for="consumable">Please select a device to view conducted tests</label>
+        <select id="consumable" name="consumable" data-dropdown>
+          <option value="">Select...</option>
+          <option value="one">one</option>
+          <option value="two">two</option>
+          <option value="three">three</option>
+
+        </select>
+    </div>
+
+  
+</div>
+</form>
+
+<div class="container mt-6-fluid">
+    <div class="row ">
+        <div class="col-12">
+            <p>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                <button class="btn btn-success" type="button" data-toggle="collapse"
+                data-target="#Test" aria-expanded="false"
+                aria-controls="Test">OK</button>
+                    </div>
+                </div>
+            </p>
+
+            <div class="collapse" id="Test">
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">  Test ID </th>
+                        <th scope="col">  Test Name </th>
+                        <th scope="col">  Start Date </th>
+                        <th scope="col">  End Date  </th>
+                        <th scope="col">  Reference Range </th>
+                        <th scope="col">  Value </th>
+                        <th scope="col">  Patient Number </th>
+                        <th scope="col">  Patient Sex </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="dropdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+</body>
+</html>
