@@ -93,7 +93,10 @@
         
                             <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#Credentials"
                                 aria-expanded="false" aria-controls="Credentials">Credentials</button>
-                        
+                            
+                            <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#Supervisors" aria-expanded="false"
+                            aria-controls="Supervisors">Supervisors</button>
+
                         </div>
                         
                     </div>
@@ -105,32 +108,24 @@
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">SSN</th>
                                     <th scope="col"> First Name </th>
                                     <th scope="col"> Middle Name </th>
                                     <th scope="col"> Last Name </th>
                                     <th scope="col"> Sex </th>
                                     <th scope="col"> Birthdate </th>
-                                    <th scope="col"> Phone Number </th>
-                                    <th scope="col"> Email </th>
-                                    <th scope="col"> Address </th>
-                                    <th scope="col"> SSN </th>
-                                    <th scope="col"> Qualifications </th>
+                                    <th scope="col"> Salary </th>
+                                    <th scope="col"> Supervisor SSN </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
+                            {% for r in data.personalinfo %}
+                            <tr>
+                                {% for l in r %}
+                                <td>{{l}}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
         
                             </tbody>
                         </table>
@@ -140,28 +135,22 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">SSN</th>
                                     <th scope="col"> First Name </th>
-                                    <th scope="col"> Middle Name </th>
                                     <th scope="col"> Last Name </th>
-                                    <th scope="col"> Sex </th>
-                                    <th scope="col"> Relationship </th>
-                                    <th scope="col"> Phone Number </th>
-                                    <th scope="col"> DepSSN </th>
                                     <th scope="col"> Address </th>
+                                    <th scope="col"> PhoneNumber </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
+                                    {% for r in data.contactinfo %}
+                                    <tr>
+                                        {% for l in r %}
+                                        <td>{{l}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
                                 </tr>
         
                             </tbody>
@@ -171,32 +160,50 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">SSN</th>
+                                    <th scope="col"> First Name </th>
+                                    <th scope="col"> Last Name </th>
+                                    <th scope="col"> Username </th>
+                                    <th scope="col"> Password </th>
+                                    <th scope="col"> Email </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% for r in data.basicinfo %}
+                                    <tr>
+                                        {% for l in r %}
+                                        <td>{{l}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="collapse" id="Supervisors">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">SSN</th>
                                     <th scope="col"> First Name </th>
                                     <th scope="col"> Middle Name </th>
                                     <th scope="col"> Last Name </th>
                                     <th scope="col"> Sex </th>
                                     <th scope="col"> Birthdate </th>
-                                    <th scope="col"> Phone Number </th>
-                                    <th scope="col"> Email </th>
-                                    <th scope="col"> Address </th>
-                                    <th scope="col"> SSN </th>
-                                    <th scope="col"> Qualifications </th>
+                                    <th scope="col"> Salary </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    {% for r in data.superinfo %}
+                                <tr>
+                                    {% for l in r %}
+                                    <td>{{l}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
                                 </tr>
                             </tbody>
                         </table>
@@ -236,7 +243,41 @@
                             </tbody>
                         </table>
                     </div>
-        
+                    <div class="collapse" id="Manages">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col"> First Name </th>
+                                    <th scope="col"> Middle Name </th>
+                                    <th scope="col"> Last Name </th>
+                                    <th scope="col"> Sex </th>
+                                    <th scope="col"> Birthdate </th>
+                                    <th scope="col"> Phone Number </th>
+                                    <th scope="col"> Email </th>
+                                    <th scope="col"> Address </th>
+                                    <th scope="col"> SSN </th>
+                                    <th scope="col"> Qualifications </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
         
                 </div>
                 
