@@ -11,6 +11,11 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
+@app.route('/Login', methods=['POST', 'GET'])
+def Login():
+    return render_template('Login.html')
+
+
 @app.route('/Add_employee', methods=['POST', 'GET'])
 def Add_employee():
     if request.method == 'POST':
