@@ -5,9 +5,13 @@
       <meta charset="utf-8">
       <title> Login   </title>
        <!---------------------------------------- Include the css file ---------------------------------------->
+       <!-- <link rel="stylesheet" href="Login.css"> -->
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static/css', filename='Login.css') }}"/>
+      
+      <link rel="stylesheet" type="Background" src="{{ url_for('static/images', filename='Background.jpg') }}"/>
 
-      <link rel="stylesheet" href="Login.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+      <!-- <link ... href="{{ url_for('static', filename='Login.css') }}" /> -->
    </head>
    <body>
       <div class="bg-img">
