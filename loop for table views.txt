@@ -1,0 +1,7 @@
+{% for r in data.rec %}
+<tr>
+{% for l in r %}
+<td>{{l}}</td>
+{% endfor %}
+</tr>
+{% endfor %} 
