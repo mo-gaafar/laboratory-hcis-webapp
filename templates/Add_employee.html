@@ -11,178 +11,203 @@
 </head>
 
 <body>
+    {%extends "hr_navbar.html" %}
+    {%block content%}
     <div class="container">
         <h1>Add Employee</h1>
     </div>
-    <div class="container">
-        <div class="container border">
-            <h4>Basic Information</h4>
-            <div class="m-3">
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">Username</label>
-                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="JohnDoe1">
-                </div>
-            </div>
+    <form action="http://127.0.0.1:5000/Add_employee" method="POST">
 
-            <div class="m-3">
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">Email Address</label>
-                    <input type="string" class="form-control" id="exampleFormControlInput1"
-                        placeholder="name@example.com">
-                </div>
-            </div>
-
-            <div class="m-3">
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">Password</label>
-                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="password123">
-                </div>
-            </div>
-        </div>
-
-
-        <div class="container border">
-            <h4>Personal Information</h4>
-            <div class="row">
-                <div class="col-3">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="John">
+        <div class="container">
+            <div class="container border">
+                <h4>Basic Information</h4>
+                <div class="m-3">
+                    <div class="col-4">
+                        <label for="exampleFormControlInput1" class="form-label">Username</label>
+                        <input name="Username" type="string" class="form-control" id="exampleFormControlInput1" placeholder="JohnDoe1">
                     </div>
                 </div>
-
-                <div class="col-3">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="Max">
+    
+                <div class="m-3">
+                    <div class="col-4">
+                        <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+                        <input name="EmailAddress" type="string" class="form-control" id="exampleFormControlInput1"
+                            placeholder="name@example.com">
                     </div>
                 </div>
-
-                <div class="col-3">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="Doe">
+    
+                <div class="m-3">
+                    <div class="col-4">
+                        <label for="exampleFormControlInput1" class="form-label">Password</label>
+                        <input name="Password" type="string" class="form-control" id="exampleFormControlInput1" placeholder="password123">
                     </div>
                 </div>
-
-                <div class="col-3">
-                    <div class="mt-5 mr-3 mb-3 ml-3">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Gender
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Female</a></li>
-                                <li><a class="dropdown-item" href="#">Male</a></li>
-                            </ul>
+            </div>
+    
+    
+            <div class="container border">
+                <h4>Personal Information</h4>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                            <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="John">
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="DD/MM/YYYY">
+    
+                    <div class="col-3">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
+                            <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Max">
+                        </div>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Social Security Number</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="1234567890">
-                        <p>Required for Egyptians</p>
+    
+                    <div class="col-3">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                            <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Doe">
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Nationality</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="United States">
+
+                        
+                    <div class="col-3">
+                        <div class=" m-3">
+                          <form method="post">
+                            <label for="exampleFormControlInput1" class="form-label">Gender</label> <br>
+                            <div class="form-control">
+                                <input type="radio" name="Gender" value="female"> Female   
+                                <input type="radio" name="Gender" value="male"> Male 
+                            </div>
+                             
+                          </form>
+                        </div>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Passport Number</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="1234567890">
-                        <p>Required for foreigners</p>
-                    </div>
+
+
                 </div>
 
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Dependents</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="Jack">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Manager SSN</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="1234567890">
-                        <p>if any</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Supervisor SSN</label>
-                        <input type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="1234567890">
-                        <p>if any</p>
-                    </div>
-                </div>
                 <div class="row">
+
                     <div class="col-4">
                         <div class="m-3">
-                            <label for="exampleFormControlInput1" class="form-label">Salary</label>
-                            <input type="string" class="form-control" id="exampleFormControlInput1"
+                            <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
+                            <input name="Birthdate" type="string" class="form-control" id="exampleFormControlInput1"
+                                placeholder="YYYY/DD/MM">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">Social Security Number</label>
+                            <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1"
                                 placeholder="1234567890">
                         </div>
                     </div>
+
+                     <div class="col-4">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">ID</label>
+                            <input name="ID" type="string" class="form-control" id="exampleFormControlInput1"
+                                placeholder="1234">
+                            <p>Institutional Identification</p>
+                        </div>
+                    </div>
                 </div>
+
+
+ 
+                <div class="row">  
+                    <div class="col-4">
+                        <div class="m-3">
+                            <label for="exampleFormControlInput1" class="form-label">Supervisor SSN</label>
+                            <input name="SupervisorSSN" type="string" class="form-control" id="exampleFormControlInput1"
+                                placeholder="1234567890">
+                            <p>if any</p>
+                        </div>
+                    </div>
+                        <div class="col-4">
+                            <div class="m-3">
+                                <label for="exampleFormControlInput1" class="form-label">Salary</label>
+                                <input name="Salary" type="string" class="form-control" id="exampleFormControlInput1"
+                                    placeholder="1234567890">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="m-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qualifications</label>
+                                <input name="Qualifications" type="file" class="form-control" id="exampleFormControlInput1">
+                            </div>
+                        </div>
+                    </div>
+
             </div>
-        </div>
+    
+            <div class="container border">
+                <div class="row">
+                    <div class="col-4">
+                        <h4>Contact Information</h4>
+                    </div>
+                    <div class="col-4">
+                        <h4> </h4>
 
-        <div class="container border">
-            <h4>Contact Information</h4>
-            <div class="row">
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">Address</label>
-                    <input type="string" class="form-control" id="exampleFormControlInput1"
-                        placeholder="Street 1 - Building 2 - Apartment 3">
+                    </div>
+                    <div class="col-4">
+                        <h4>Permission Level</h4> 
+                    </div>
+
                 </div>
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">City</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Cairo">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="exampleFormControlInput1" class="form-label">Address</label>
+                            <input name="Address" type="string" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Street 1 - Building 2 - Apartment 3">
+                        </div>
+                        <div class="col-4">
+                            <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+                            <input name="PhoneNumber" type="string" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
+                        </div>
+                        <div class="col-4">                                            
+                                <label for="exampleFormControlInput1" class="form-label">Employee Type</label> <br>
+                            <div class="form-control">
+                                <input type="radio" name="PermissionLevel" value="employee">Human resouces    
+                                <input type="radio" name="PermissionLevel" value="admin">Admin<br>
+                            </div>
+                        </div>
+    
+                        <div class="m-3"></div>
+    
+                    </div>
+        
+
                 </div>
-                <div class="col-4">
-                    <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
-                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
-                </div>
-                <div class="m-3">
-                </div>
+
+                
             </div>
 
-        </div>
-        <div class="m-3">
-            <button type="button" class="btn btn-success">Submit</button>
+            
+         
 
+            <div class="m-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+    </form>
+    {%if message%}
+      <div class="alert alert-success" role="alert">
+        {{message}}
+      </div>
+    {%endif%}
 
-        </div>
-
-
-
+    {%if error%}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
+      </div>
+    {%endif%}
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+            
+            {% endblock %}
 </body>
 
 </html>
