@@ -1,66 +1,89 @@
-from flask import Flask, render_template
+import mysql.connector
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
-@app.route('/')
-def hello_name():
-   return render_template('index.html')
+mydb = mysql.connector.connect(
+  host="hospital-lab.mysql.database.azure.com",
+  user="lab_admin",
+  passwd="tamerbasha.2024", #write ur own password
+  database="Laboratory_Department" #here 
+)
+mycursor = mydb.cursor()
 
-@app.route('/signup')
-def signup():
-   return render_template('signup.html')
 
-@app.route('/Add_new_equipment')
-def Add_new_equipment():
-   return render_template('Add_new_equipment.html')
-
-@app.route('/Edit_equipment')
-def Edit_equipment():
-   return render_template('Edit_equipment.html')
-
-@app.route('/Add_employee')
+@app.route('/Add_employee', methods=['POST','GET'])
 def Add_employee():
-   return render_template('Add_employee.html')
+    if request.method=='POST':
+        FirstName=request.form['FirstName']
+        MiddleName=request.form['MiddleName']
+        LastName=request.form['LastName']
+        Birthdate=request.form['Birthdate']
+        SSN=request.form['SSN']
+        Salary=request.form['Salary']
+        Address=request.form['Address']
+        if request.form['SupervisorSSN'] ==(''):
+         SupervisorSSN= None
+        else:
+         SupervisorSSN = request.form['SupervisorSSN']
+        EmailAddress=request.form['EmailAddress']
+        Gender=request.form['Gender']
+        ID=request.form['ID']
+        PhoneNumber=request.form['PhoneNumber']
+        Qualifications=request.form['Qualifications']
+        Username=request.form['Username']
+        Password=request.form['Password']
+        PermissionLevel=request.form['PermissionLevel']
+        try:
+         sql= "INSERT INTO employee(First_Name, Middle_Name, Last_Name, Birthdate, SSN, Salary, Address, Email, Supervisor_SSN, ID, SEX) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+         val = (FirstName, MiddleName, LastName, Birthdate, SSN, Salary, Address, EmailAddress, SupervisorSSN, ID, Gender)
+         mycursor.execute(sql, val)
 
-@app.route('/Add_lab_tech')
-def Add_lab_tech():
-   return render_template('Add_lab_tech.html')
+         sql= "INSERT INTO employeephonenumber(PhoneNumber, EmployeeSSN) VALUES(%s, %s)"
+         val= (PhoneNumber, SSN)
+         mycursor.execute(sql, val)
 
-@app.route('/Login')
-def Login():
-   return render_template('Login.html')
+         sql= "INSERT INTO employeequalifications(CV, EmployeeSSN) VALUES(%s, %s)"
+         val= (Qualifications, SSN)
+         mycursor.execute(sql, val)
 
-@app.route('/Forgot_login')
-def Forgot_login():
-   return render_template('Forgot_login.html')
+         sql = "INSERT INTO User(User_SSN, Username, Password, Permission_Level, Email, EmpSSN) VALUES (%s,%s,%s,%s,%s,%s)"
+         val = (SSN, Username, Password, PermissionLevel, EmailAddress, SSN)
+         mycursor.execute(sql, val)
 
-@app.route('/Add_consumables')
-def Add_consumables():
-   return render_template('Add_consumables.html')
 
-@app.route('/Lab_guide')
-def Lab_guide():
-   return render_template('Lab_guide.html')
+         mydb.commit()
+         return render_template('index.html', message= FirstName + ' ' + LastName + " has been successfully added to the database") 
+        except:   
+            return render_template('Add_employee.html', error= "Invalid input!") 
 
-@app.route('/hr_navbar')
-def hr_navbar():
-   return render_template('hr_navbar.html')
+    else: 
+         return render_template('Add_employee.html')
 
-@app.route('/admin_navbar')
-def admin_navbar():
-   return render_template('admin_navbar.html')
+@app.route('/Add_empdependents', methods=['POST','GET'])
+def Add_empdependents():
+   if request.method=='POST':
+      FirstName=request.form['FirstName']
+      MiddleName=request.form['MiddleName']
+      LastName=request.form['LastName']
+      Birthdate=request.form['Birthdate']
+      SSN=request.form['SSN']
+      Gender=request.form['Gender']
+      Address=request.form['Address']
+      Relationship=request.form['Relationship']
+      EmployeeSSN=request.form['EmployeeSSN']
 
-@app.route('/frontdesk_navbar')
-def frontdesk_navbar():
-   return render_template('frontdesk_navbar.html')
+      try:
+         sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Address, Relationship, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+         val = (SSN, FirstName, MiddleName, LastName, Birthdate, Gender, Relationship, Address, EmployeeSSN)
+         mycursor.execute(sql, val)
+         mydb.commit()
+         return render_template('index.html', message= FirstName + ' ' + LastName + " has been successfully added to the database") 
+      except:
+         return render_template('Add_empdependents', error= "Invalid input!")
 
-@app.route('/labtech_navbar')
-def labtech_navbar():
-   return render_template('labtech_navbar.html')
+   else: 
+       return render_template('Add_empdependents.html')
 
-@app.route('/patient_navbar')
-def patient_navbar():
-   return render_template('patient_navbar.html')
-   
 
 if __name__ == '__main__':
-   app.run()
+   app.run(debug = True)
