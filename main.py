@@ -310,7 +310,24 @@ def testing():
 @app.route('/llogin', methods=['POST','GET'])
 def llogin():
    return render_template('llogin.html')
+@app.route('/Add_lab', methods=['POST', 'GET'])
+def Add_lab():
+    if request.method == 'POST':
+        labnum = request.form['labnum']
+        labname = request.form['labname']
+        labtype = request.form['labtype']
+        lablocation = request.form['lablocation']
+        try:
+            sql = "INSERT INTO lab(Lab_Number,Lab_Name,Lab_Type,Lab_Location) VALUES (%s,%s,%s,%s)"
+            val = (labnum, labname, labtype, lablocation)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('Add_lab.html',message="Lab "+ labname + " has been successfully added to the labs table.")
+        except:
+            return render_template('Add_lab.html', error="Invalid input!")
 
+    else:
+        return render_template('Add_lab.html')
 
 
 
