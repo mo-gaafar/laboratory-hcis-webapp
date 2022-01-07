@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!---------------------------------------- Include the css file ---------------------------------------->
+    <link rel="stylesheet" href="temp.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    
+    <title>Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <!---------------------------------- to make a spce in the top of the page------------------------------------------------------->
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    &nbsp;
+
+   
+   <div class="content">
+   
+                    <img src="file:///D:/ABDULLAH/Engineering/FALL%202021/Data%20base/Project/static/images/keyandlock.jpeg" class="img-fluid" alt="Wild Landscape" />
+                      <div class="card-body">
+          <div class="d-flex justify-content-center m-3">
+              <h2>Verification</h2>              
+              
+          </div>
+          <div class="d-flex justify-content-center m-3">
+          <p class="card-text">Enter verification code we just sent on your email address </p>
+         </div>
+   
+<!--------------------------------------------------The 4-digit verification code-------------------------------------->
+
+    <fieldset class='number-code'>
+       
+       
+      <div>
+        <div class="d-flex justify-content-center m-3">
+    
+        
+        <input  id="first" class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
+        <input  id="second" class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
+        <input  id="third" class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
+        <input  id="fouth" class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
+
+    
+      </div>
+    </fieldset>
+    
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+        <div class="d-flex justify-content-center m-3">
+            <p class="card-text">If you didn’t recive!&nbsp;</p>
+            <a href="#"> resend</a>
+        </div>
+       <!------------------------------------------------------button verify--------------------------------------------------------->
+        <div class="d-flex justify-content-center">
+        
+          <a href="http://127.0.0.1:5000/Newpassword" class="btn btn-primary">Verify</a>
+       </div>
+        
+      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
