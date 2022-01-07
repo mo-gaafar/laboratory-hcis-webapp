@@ -1,7 +1,10 @@
 #main.py
 import mysql.connector
-from flask import Flask, render_template, request
-app = Flask(__name__)
+from flask import Flask, redirect, url_for, request,render_template
+
+from datetime import datetime
+now = datetime.now()
+formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
 
 mydb = mysql.connector.connect(
   host="hospital-lab.mysql.database.azure.com",
@@ -10,11 +13,45 @@ mydb = mysql.connector.connect(
   database="Laboratory_Department" #here 
 )
 mycursor = mydb.cursor()
+app = Flask(__name__)
 
-@app.route('/')
-def hello_name():
 
-   return render_template('index.html')
+@app.route('/Add_lab_tech',methods = ['POST', 'GET'])
+def Add_lab_tech():
+   if request.method == 'POST':
+      Username = request.form['Username']
+      EmailAddress = request.form['EmailAddress']
+      Password = request.form['Password']
+      FirstName = request.form['FirstName']
+      MiddleName = request.form['MiddleName']
+      LastName = request.form['LastName']
+      Sex = request.form['Sex']
+      formatted_date = request.form['Birthdate']
+      SSN = request.form['SSN']
+      ManagerSSN = request.form['ManagerSSN']
+      Salary = request.form['Salary']
+      Address = request.form['Address']
+      PhoneNumber = request.form['PhoneNumber']
+      CV = request.form['CV']
+      try:
+         sql = "INSERT INTO Lab_Technician (SSN,First_Name,Middle_Name,Last_Name,SEX,Birthdate,Salary,Email,Address,Manager_SSN) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+         val = (SSN,FirstName,MiddleName,LastName,Sex,formatted_date,Salary,EmailAddress,Address,ManagerSSN)
+         mycursor.execute(sql, val)
+         sql = "INSERT INTO LabTechPhoneNumber (LabTechSSN, PhoneNumber) VALUES (%s,%s)"
+         val= (SSN,PhoneNumber)
+         mycursor.execute(sql, val)
+         sql = "INSERT INTO LabTechQualifications (LabTechSSN, Qualifications) VALUES (%s,%s)"
+         val = (SSN,CV)
+         mycursor.execute(sql, val)
+         sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,LabTechSSN) VALUES (%s,%s,%s,%s,%s,%s)"
+         val = (SSN,Username,Password,"labtechnician",EmailAddress,SSN)
+         mycursor.execute(sql, val)
+         mydb.commit()
+         return render_template('Add_lab_tech.html',message=FirstName + ' ' + LastName+ " has been succesfuly added to lab technicians.")
+      except:
+         return render_template('Add_lab_tech.html', error="Invalid input!")
+   else:
+      return render_template('Add_lab_tech.html')
 
 
 @app.route('/View_report_patient', methods=['POST','GET'])
@@ -30,6 +67,26 @@ def View_report_patient():
    else:
       return render_template('View_report_post_OK.html')
 
+@app.route('/Add_Report', methods=['POST','GET'])
+def Add_Report():
+    if request.method=='POST':
+      ReportID=request.form['ReportID']
+      Name=request.form['Name']
+      Publish_Date=request.form['Publish_Date']
+      Reffered_By=request.form['Reffered_By']
+      Comments=request.form['Comments']
+      Patient_SSN=request.form['Patient_SSN']
+      try:
+         sql= "INSERT INTO report(ReportID,Name,Publish_Date,Referred_By,Comments,Patient_SSN) VALUES(%s, %s, %s, %s, %s, %s)"
+         val = (ReportID, Name, Publish_Date, Reffered_By, Comments, Patient_SSN)
+         mycursor.execute(sql, val)
+         mydb.commit()
+         return render_template('index.html', message= ReportID + " has been successfully added to the database") 
+      except:   
+            return render_template('Add_Report.html', error= "Invalid input!") 
+
+    else: 
+         return render_template('Add_Report.html')
 
 @app.route('/signup', methods=['POST','GET'])
 def signup():
@@ -112,15 +169,60 @@ def Add_employee():
          sql = "INSERT INTO User(User_SSN, Username, Password, Permission_Level, Email, EmpSSN) VALUES (%s,%s,%s,%s,%s,%s)"
          val = (SSN, Username, Password, PermissionLevel, EmailAddress, SSN)
          mycursor.execute(sql, val)
-
-
          mydb.commit()
          return render_template('index.html', message= FirstName + ' ' + LastName + " has been successfully added to the database") 
         except:   
             return render_template('Add_employee.html', error= "Invalid input!") 
 
-    else: 
-         return render_template('Add_employee.html')
+@app.route('/Login',methods = ['POST', 'GET'])
+def Login():
+   if request.method == 'POST':
+      Email = request.form['Email']
+      Password = request.form['Password']
+      mycursor.execute("SELECT Permission_Level FROM User WHERE Email=%s AND Password=%s", (Email, Password))
+      permission = mycursor.fetchone()
+      if permission:
+          mycursor.execute("SELECT Username FROM User WHERE Email=%s AND Password=%s", (Email, Password))
+          x = mycursor.fetchone()
+          username = x[0]
+          if permission==('admin',):
+           return render_template('admin_home.html', message="Welcome "+ username, username=username)
+          if permission == ('employee',):
+             return render_template('employee_home.html', message="Welcome "+ username, username=username)
+          if permission == ('labtechnician',):
+             return render_template('labtech_home.html', message="Welcome "+ username, username=username)
+          if permission == ('patient',):
+             return render_template('patient_home.html', message="Welcome "+ username, username=username)
+      else:
+          return render_template('Login.html', error="Incorrect Email or Password!")
+   else:
+      return render_template('Login.html')
+
+@app.route('/Add_labtech_dependents', methods=['POST', 'GET'])
+def Add_labtech_dependents():
+   if request.method == 'POST':
+       FirstName = request.form['FirstName']
+       MiddleName = request.form['MiddleName']
+       LastName = request.form['LastName']
+       Birthdate = request.form['Birthdate']
+       SSN = request.form['SSN']
+       Gender = request.form['Gender']
+       Address = request.form['Address']
+       Relationship = request.form['Relationship']
+       LabtechSSN = request.form['LabtechSSN']
+
+       try:
+           sql = "INSERT INTO Dependents_LabTech(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Address, Relationship, Lab_Tech_SSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+           val = (SSN, FirstName, MiddleName, LastName, Birthdate,Gender, Address, Relationship, LabtechSSN)
+           mycursor.execute(sql, val)
+           mydb.commit()
+           return render_template('admin_home.html',message=FirstName + ' ' + LastName + " has been successfully added to the database")
+       except:
+           return render_template('Add_labtech_dependents.html', error="Invalid input!")
+
+   else:
+       return render_template('Add_labtech_dependents.html')
+
 
 @app.route('/Add_empdependents', methods=['POST','GET'])
 def Add_empdependents():
@@ -209,67 +311,119 @@ def View_employee():
       return render_template('View_employee.html', data=data)
       
 
-@app.route('/Add_lab_tech', methods=['POST','GET'])
-def Add_lab_tech():
-   
-   return render_template('Add_lab_tech.html')
+@app.route('/Add_test', methods=['POST','GET']) 
+def Add_test():
+   if request.method=='POST':
+      Test_ID=request.form['Test_ID']
+      Test_Name=request.form['Test_Name']
+      Category=request.form['Category']
+      Value=request.form['Value']
+      Start_Date=request.form['Start_Date']
+      End_Date=request.form['End_Date']
+      Reference_Range=request.form['Reference_Range']
+      Cost=request.form['Cost']
+      Patient_SSN=request.form['Patient_SSN']
+      Report_ID=request.form['Report_ID']
+      Lab_No=request.form['Lab_No']
+      # try:
+      sql= "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+      val = (Test_ID, Test_Name, Category, Value, Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No)
+      mycursor.execute(sql, val)
+      mydb.commit()
+      return render_template('index.html', message= Test_ID + " has been successfully added to the database") 
+      # # except:   
+      #       return render_template('Add_test.html', error= "Invalid input!") 
 
-@app.route('/Login', methods=['POST','GET'])
-def Login():
-   return render_template('Login.html')
-
-@app.route('/Forgot_login', methods=['POST','GET'])
-def Forgot_login():
-   return render_template('Forgot_login.html')
-
-@app.route('/Add_consumables', methods=['POST','GET'])
-def Add_consumables():
-   return render_template('Add_consumables.html')
-
-@app.route('/test', methods=['POST','GET'])
-def test():
-   return render_template('test.html')
-
-@app.route('/Lab_guide', methods=['POST','GET'])
-def Lab_guide():
-   return render_template('Lab_guide.html')
-
-@app.route('/hr_navbar', methods=['POST','GET'])
-def hr_navbar():
-   return render_template('hr_navbar.html')
-
-@app.route('/admin_navbar', methods=['POST','GET'])
-def admin_navbar():
-   return render_template('admin_navbar.html')
-
-@app.route('/frontdesk_navbar', methods=['POST','GET'])
-def frontdesk_navbar():
-   return render_template('frontdesk_navbar.html')
-
-@app.route('/labtech_navbar', methods=['POST','GET'])
-def labtech_navbar():
-   return render_template('labtech_navbar.html')
-
-@app.route('/patient_navbar', methods=['POST','GET'])
-def patient_navbar():
-   return render_template('patient_navbar.html')
-
-@app.route('/temp_navbar', methods=['POST','GET'])
-def temp_navbar():
-   return render_template('temp_navbar.html')
-
-@app.route('/testing', methods=['POST','GET'])
-def testing():
-   return render_template('testing.html')
-
-@app.route('/llogin', methods=['POST','GET'])
-def llogin():
-   return render_template('llogin.html')
+   else: 
+         return render_template('Add_test.html')
 
 
+@app.route('/View_lab_tech', methods=['POST','GET'])
+def View_lab_tech():
+   if request.method == 'GET':
+      # Personal info
+        mycursor.execute("SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician")
+        PersonalInfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN ")
+        BasicInfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN  ")
+        ContactInfo = mycursor.fetchall()
+        # # Manager Table
+        # mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician JOIN employee AS E WHERE  Manager_SSN= E.SSN ")
+        # Manager = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'PersonalInfo': PersonalInfo,
+            'BasicInfo': BasicInfo,
+            'ContactInfo': ContactInfo,
+            # 'Manager': Manager
+        }
+        return render_template('View_lab_tech.html', data=data)
+   else:
+      LabtechSSN=request.form['LabtechSSN']
+      # Personal info
+      mycursor.execute("SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician WHERE SSN=%s",(LabtechSSN,))
+      PersonalInfo = mycursor.fetchall()
+      # Basic Info Button
+      mycursor.execute("SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN  AND SSN=%s",(LabtechSSN,))
+      BasicInfo = mycursor.fetchall()
+      # Contact Info Button
+      mycursor.execute("SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN AND SSN=%s",(LabtechSSN,))
+      ContactInfo = mycursor.fetchall()
+      # Manager Table
+      mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician AS L JOIN employee AS E WHERE  L.Manager_SSN= E.SSN AND L.SSN=%s",(LabtechSSN,))
+      Manager = mycursor.fetchall()
+      # Dependents Table
+      mycursor.execute("SELECT SSN, Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s",(LabtechSSN,))
+      Dependents = mycursor.fetchall()
+      
+      data={
+         'message': "data retrieved",
+         'PersonalInfo': PersonalInfo,
+         'BasicInfo': BasicInfo,
+         'ContactInfo': ContactInfo,
+         'Manager': Manager,
+         'Dependents': Dependents,
+      }
+      return render_template('View_lab_tech.html', data=data)
 
 
+
+@app.route('/View_lab', methods=['POST','GET'])
+def View_lab():
+   if request.method == 'GET':
+       mycursor.execute("SELECT * FROM Lab")
+       labinfo = mycursor.fetchall()
+       data = {
+           'message': "data retrieved",
+           'labinfo': labinfo
+       }
+       return render_template('View_lab.html', data=data)
+    
+    
+@app.route('/Add_lab', methods=['POST', 'GET'])
+def Add_lab():
+    if request.method == 'POST':
+        labnum = request.form['labnum']
+        labname = request.form['labname']
+        labtype = request.form['labtype']
+        lablocation = request.form['lablocation']
+        try:
+            sql = "INSERT INTO lab(Lab_Number,Lab_Name,Lab_Type,Lab_Location) VALUES (%s,%s,%s,%s)"
+            val = (labnum, labname, labtype, lablocation)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('Add_lab.html',message="Lab "+ labname + " has been successfully added to the labs table.")
+        except:
+            return render_template('Add_lab.html', error="Invalid input!")
+
+    else:
+        return render_template('Add_lab.html')
 
 
 if __name__ == '__main__':
    app.run(debug = True)
+
