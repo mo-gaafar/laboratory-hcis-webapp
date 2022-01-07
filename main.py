@@ -30,6 +30,26 @@ def View_report_patient():
    else:
       return render_template('View_report_post_OK.html')
 
+@app.route('/Add_Report', methods=['POST','GET'])
+def Add_Report():
+    if request.method=='POST':
+      ReportID=request.form['ReportID']
+      Name=request.form['Name']
+      Publish_Date=request.form['Publish_Date']
+      Reffered_By=request.form['Reffered_By']
+      Comments=request.form['Comments']
+      Patient_SSN=request.form['Patient_SSN']
+      try:
+         sql= "INSERT INTO report(ReportID,Name,Publish_Date,Referred_By,Comments,Patient_SSN) VALUES(%s, %s, %s, %s, %s, %s)"
+         val = (ReportID, Name, Publish_Date, Reffered_By, Comments, Patient_SSN)
+         mycursor.execute(sql, val)
+         mydb.commit()
+         return render_template('index.html', message= ReportID + " has been successfully added to the database") 
+      except:   
+            return render_template('Add_Report.html', error= "Invalid input!") 
+
+    else: 
+         return render_template('Add_Report.html')
 
 @app.route('/signup', methods=['POST','GET'])
 def signup():
@@ -209,9 +229,34 @@ def View_employee():
       return render_template('View_employee.html', data=data)
       
 
+@app.route('/Add_test', methods=['POST','GET']) 
+def Add_test():
+   if request.method=='POST':
+      Test_ID=request.form['Test_ID']
+      Test_Name=request.form['Test_Name']
+      Category=request.form['Category']
+      Value=request.form['Value']
+      Start_Date=request.form['Start_Date']
+      End_Date=request.form['End_Date']
+      Reference_Range=request.form['Reference_Range']
+      Cost=request.form['Cost']
+      Patient_SSN=request.form['Patient_SSN']
+      Report_ID=request.form['Report_ID']
+      Lab_No=request.form['Lab_No']
+      # try:
+      sql= "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+      val = (Test_ID, Test_Name, Category, Value, Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No)
+      mycursor.execute(sql, val)
+      mydb.commit()
+      return render_template('index.html', message= Test_ID + " has been successfully added to the database") 
+      # # except:   
+      #       return render_template('Add_test.html', error= "Invalid input!") 
+
+   else: 
+         return render_template('Add_test.html')
+
 @app.route('/Add_lab_tech', methods=['POST','GET'])
-def Add_lab_tech():
-   
+def Add_lab_tech():   
    return render_template('Add_lab_tech.html')
 
 @app.route('/Login', methods=['POST','GET'])
