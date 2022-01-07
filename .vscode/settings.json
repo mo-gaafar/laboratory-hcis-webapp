@@ -39,5 +39,6 @@
       "database": "MySql",
       "password": "tamerbasha.2024"
     }
-  ]
+  ],
+  "activestate.promptRuntimeCreation": false
 }
