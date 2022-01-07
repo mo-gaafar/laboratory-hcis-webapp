@@ -79,7 +79,7 @@ def Add_empdependents():
         EmployeeSSN = request.form['EmployeeSSN']
 
         try:
-            sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Address, Relationship, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Relationship, Address, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (SSN, FirstName, MiddleName, LastName, Birthdate,
                    Gender, Relationship, Address, EmployeeSSN)
             mycursor.execute(sql, val)
@@ -90,6 +90,67 @@ def Add_empdependents():
 
     else:
         return render_template('Add_empdependents.html')
+    
+    @app.route('/View_employee', methods=['POST','GET'])
+def View_employee():
+   if request.method == 'GET':
+      # Personal info
+        mycursor.execute("SELECT ID, SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Supervisor_SSN FROM employee")
+        personalinfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM employee JOIN user WHERE SSN = EmpSSN ")
+        basicinfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM employee JOIN employeephonenumber WHERE SSN = EmployeeSSN  ")
+        contactinfo = mycursor.fetchall()
+        # Supervisor Table
+        mycursor.execute("SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN ")
+        superinfo = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'personalinfo': personalinfo,
+            'basicinfo': basicinfo,
+            'contactinfo': contactinfo,
+            'superinfo': superinfo
+        }
+        return render_template('View_employee.html', data=data)
+   else:
+      EmployeeSSN=request.form['EmployeeSSN']
+      # Personal info
+      mycursor.execute("SELECT E.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate, E.Salary, E.Supervisor_SSN FROM employee AS E WHERE E.SSN=%s",(EmployeeSSN,))
+      personalinfo = mycursor.fetchall()
+      # Basic Info Button
+      mycursor.execute("SELECT E.SSN, E.First_Name,E.Last_Name,Username,Password, user.Email FROM employee AS E JOIN user WHERE E.SSN = user.EmpSSN AND E.SSN=%s",(EmployeeSSN,))
+      basicinfo = mycursor.fetchall()
+      # Contact Info Button
+      mycursor.execute("SELECT E.SSN, E.First_Name,E.Last_Name,E.Address,PhoneNumber FROM employee AS E JOIN employeephonenumber WHERE E.SSN = EmployeeSSN AND E.SSN=%s",(EmployeeSSN,))
+      contactinfo = mycursor.fetchall()
+      # Supervisor Table
+      mycursor.execute("SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN AND E.SSN=%s",(EmployeeSSN,))
+      superinfo = mycursor.fetchall()
+      # Dependents Table
+      mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM employee AS E JOIN dependents_employee AS D WHERE E.SSN = D.ESSN AND D.ESSN=%s",(EmployeeSSN,))
+      depinfo = mycursor.fetchall()
+      # Supervised Table
+      mycursor.execute("SELECT S.ID, S.SSN, S.First_Name, S.Middle_Name, S.Last_Name, S.SEX, S.Birthdate, S.Salary FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND E.SSN=%s",(EmployeeSSN,))
+      supervisedinfo = mycursor.fetchall()
+      # Supervises Table
+      mycursor.execute("SELECT S.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate, E.Salary FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND S.SSN=%s",(EmployeeSSN,))
+      supervisesinfo = mycursor.fetchall()
+
+      data={
+         'message': "data retrieved",
+         'personalinfo': personalinfo,
+         'basicinfo': basicinfo,
+         'contactinfo': contactinfo,
+         'superinfo': superinfo,
+         'depinfo': depinfo,
+         'supervisedinfo':supervisedinfo,
+         'supervisesinfo':supervisesinfo
+      }
+      return render_template('View_employee.html', data=data)
+     
 
 
 if __name__ == '__main__':
