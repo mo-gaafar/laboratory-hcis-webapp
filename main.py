@@ -310,7 +310,16 @@ def testing():
 @app.route('/llogin', methods=['POST','GET'])
 def llogin():
    return render_template('llogin.html')
-
+@app.route('/View_lab', methods=['POST','GET'])
+def View_lab():
+   if request.method == 'GET':
+       mycursor.execute("SELECT * FROM Lab")
+       labinfo = mycursor.fetchall()
+       data = {
+           'message': "data retrieved",
+           'labinfo': labinfo
+       }
+       return render_template('View_lab.html', data=data)
 
 
 
