@@ -194,6 +194,8 @@ def Add_employee():
             return render_template('index.html', message=FirstName + ' ' + LastName + " has been successfully added to the database")
         except:
             return render_template('Add_employee.html', error="Invalid input!")
+    else:
+        return render_template('Add_employee.html')
 
 
 @app.route('/Login', methods=['POST', 'GET'])
