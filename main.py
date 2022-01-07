@@ -310,6 +310,19 @@ def testing():
 @app.route('/llogin', methods=['POST','GET'])
 def llogin():
    return render_template('llogin.html')
+
+@app.route('/View_lab', methods=['POST','GET'])
+def View_lab():
+   if request.method == 'GET':
+       mycursor.execute("SELECT * FROM Lab")
+       labinfo = mycursor.fetchall()
+       data = {
+           'message': "data retrieved",
+           'labinfo': labinfo
+       }
+       return render_template('View_lab.html', data=data)
+    
+    
 @app.route('/Add_lab', methods=['POST', 'GET'])
 def Add_lab():
     if request.method == 'POST':
@@ -328,10 +341,6 @@ def Add_lab():
 
     else:
         return render_template('Add_lab.html')
-
-
-
-
 
 if __name__ == '__main__':
    app.run(debug = True)
