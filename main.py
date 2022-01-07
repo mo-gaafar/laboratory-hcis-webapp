@@ -310,6 +310,59 @@ def testing():
 @app.route('/llogin', methods=['POST','GET'])
 def llogin():
    return render_template('llogin.html')
+@app.route('/View_lab_tech', methods=['POST','GET'])
+def View_lab_tech():
+   if request.method == 'GET':
+      # Personal info
+        mycursor.execute("SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician")
+        PersonalInfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN ")
+        BasicInfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute("SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN  ")
+        ContactInfo = mycursor.fetchall()
+        # # Manager Table
+        # mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician JOIN employee AS E WHERE  Manager_SSN= E.SSN ")
+        # Manager = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'PersonalInfo': PersonalInfo,
+            'BasicInfo': BasicInfo,
+            'ContactInfo': ContactInfo,
+            # 'Manager': Manager
+        }
+        return render_template('View_lab_tech.html', data=data)
+   else:
+      LabtechSSN=request.form['LabtechSSN']
+      # Personal info
+      mycursor.execute("SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician WHERE SSN=%s",(LabtechSSN,))
+      PersonalInfo = mycursor.fetchall()
+      # Basic Info Button
+      mycursor.execute("SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN  AND SSN=%s",(LabtechSSN,))
+      BasicInfo = mycursor.fetchall()
+      # Contact Info Button
+      mycursor.execute("SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN AND SSN=%s",(LabtechSSN,))
+      ContactInfo = mycursor.fetchall()
+      # Manager Table
+      mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician AS L JOIN employee AS E WHERE  L.Manager_SSN= E.SSN AND L.SSN=%s",(LabtechSSN,))
+      Manager = mycursor.fetchall()
+      # Dependents Table
+      mycursor.execute("SELECT SSN, Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s",(LabtechSSN,))
+      Dependents = mycursor.fetchall()
+      
+      data={
+         'message': "data retrieved",
+         'PersonalInfo': PersonalInfo,
+         'BasicInfo': BasicInfo,
+         'ContactInfo': ContactInfo,
+         'Manager': Manager,
+         'Dependents': Dependents,
+      }
+      return render_template('View_lab_tech.html', data=data)
+
+
 
 @app.route('/View_lab', methods=['POST','GET'])
 def View_lab():
@@ -341,6 +394,7 @@ def Add_lab():
 
     else:
         return render_template('Add_lab.html')
+
 
 if __name__ == '__main__':
    app.run(debug = True)
