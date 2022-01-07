@@ -11,8 +11,8 @@
 </head>
 
 <body>
-
-
+  {%extends "hr_navbar.html" %}
+    {%block content%}
   <div class="container mt-6-fluid">
     <h1>View Employees</h1>
     <form action="http://127.0.0.1:5000/View_employee" method="POST">
@@ -326,6 +326,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
+
+    {% endblock %}
 </body>
 
 </html>
