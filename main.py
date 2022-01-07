@@ -79,7 +79,7 @@ def Add_empdependents():
         EmployeeSSN = request.form['EmployeeSSN']
 
         try:
-            sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Address, Relationship, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Relationship, Address, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (SSN, FirstName, MiddleName, LastName, Birthdate,
                    Gender, Relationship, Address, EmployeeSSN)
             mycursor.execute(sql, val)
