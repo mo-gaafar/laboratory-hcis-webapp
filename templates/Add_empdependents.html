@@ -12,12 +12,13 @@
     {%extends "hr_navbar.html" %}
     {%block content%}
 
-
-    <div class="container">
-        <h1>Add Employee Dependent</h1>
-    </div>
     <form action="http://127.0.0.1:5000/Add_empdependents" method="POST">
-        <div class="container border">
+        <div class="container">
+            <div class="m-3">
+                <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                <h1>Add Employee Dependent</h1>
+                <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+            </div>
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Employee SSN</label>
                 <input name="EmployeeSSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">

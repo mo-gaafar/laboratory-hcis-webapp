@@ -13,13 +13,16 @@
 <body>
     {%extends "hr_navbar.html" %}
     {%block content%}
-    <div class="container">
-        <h1>Add Employee</h1>
-    </div>
+    
     <form action="http://127.0.0.1:5000/Add_employee" method="POST">
 
         <div class="container">
-            <div class="container border">
+            <div class="m-3">
+                <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                <h1>Add Employee</h1>
+                <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+            </div>
+            <div class="container">
                 <h4>Basic Information</h4>
                 <div class="m-3">
                     <div class="col-4">
@@ -45,7 +48,7 @@
             </div>
     
     
-            <div class="container border">
+            <div class="container">
                 <h4>Personal Information</h4>
                 <div class="row">
                     <div class="col-3">
@@ -141,7 +144,7 @@
 
             </div>
     
-            <div class="container border">
+            <div class="container">
                 <div class="row">
                     <div class="col-4">
                         <h4>Contact Information</h4>
