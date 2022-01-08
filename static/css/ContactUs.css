@@ -13,7 +13,7 @@ body{
   min-height: 100vh;
   padding: 40px;
   /* background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%); */
-  background-image: url('file:///D:/ABDULLAH/Engineering/FALL%202021/Data%20base/Project/static/images/Background.jpg'); 
+  background-image: url('/static/images/Background.jpg'); 
   background-size: cover;
   height: 100vh;
   background-size: cover;

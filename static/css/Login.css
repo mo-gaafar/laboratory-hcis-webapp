@@ -6,7 +6,7 @@
   user-select: none;
 }
 .bg-img{
-  background-image: url('file:///D:/ABDULLAH/Engineering/FALL%202021/Data%20base/Project/static/images/Background.jpg'); 
+  background-image: url('/static/images/background.jpg'); 
    
   background-size: cover;
   height: 100vh;
