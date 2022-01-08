@@ -11,10 +11,12 @@
 </head>
 
 <body>
-{%extends "labtech_navbar.html" %}
+{%extends "admin_navbar.html" %}
 {%block content%}
     <div class="container">
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
         <h1>Add Lab Technician</h1>
+        <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
     </div>
      <form action="http://127.0.0.1:5000/Add_lab_tech" method="POST">
     <div class="container">
@@ -129,7 +131,7 @@
 <!--                </div>-->
                 <div class="col-4">
                     <div class="m-3">
-                        <label for="exampleFormControlInput1" class="form-label">Manager SSN (if any)</label>
+                        <label for="exampleFormControlInput1" class="form-label">Manager SSN </label>
                         <input name="ManagerSSN" type="string" class="form-control" id="exampleFormControlInput1"
                             placeholder="1234567890">
                     </div>
@@ -227,7 +229,7 @@
         </div>
         <div class="m-3">
 <!--            <button type="button" class="btn btn-success">Submit</button>-->
-            <input type="submit" value="Submit">
+            <button type="submit" class="btn btn-success">Submit</button>
 
 
         </div>

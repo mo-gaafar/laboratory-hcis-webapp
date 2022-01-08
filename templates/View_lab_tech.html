@@ -10,9 +10,14 @@
 </head>
 
 <body>
+  {%extends "admin_navbar.html" %}
+    {%block content%}
+
 
     <div class="container mt-5-fluid">
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
         <h1>View Lab Technicians</h1>
+        <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
         <form action="http://127.0.0.1:5000/View_lab_tech" method="POST">
         <div class="container">
             <div class="row searchFilter">
@@ -216,6 +221,7 @@
                                 <th scope="col"> Last Name </th>
                                 <th scope="col"> Sex </th>
                                 <th scope="col"> Birthdate </th>
+                                <th scope="col"> Salary </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -290,7 +296,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
-
+    {% endblock %}
 </body>
 
 </html>
