@@ -44,6 +44,42 @@ def View_lab():
         }
         return render_template('View_lab.html', data=data)
 
+@app.route('/Add_patient_admin', methods=['POST', 'GET'])
+def Add_patient_admin():
+    if request.method == 'POST':
+        Username = request.form['Username']
+        Email = request.form['Email']
+        Password = request.form['Password']
+        FirstName = request.form['FirstName']
+        MiddleName = request.form['MiddleName']
+        LastName = request.form['LastName']
+        Gender = request.form['Gender']
+        formatted_date = request.form['Birthdate']
+        SSN = request.form['SSN']
+        Insurance = request.form['Insurance']
+        Address = request.form['Address']
+        PhoneNumber = request.form['PhoneNumber']
+        MedicalHistory=request.form['MedicalHistory']
+        try:
+            sql = "INSERT INTO Patient(SSN,First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance,Address, Email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (SSN, FirstName, MiddleName, LastName, Gender, formatted_date, Insurance, Address, Email)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,PatientSSN) VALUES(%s, %s, %s, %s, %s, %s)"
+            val = (SSN, Username, Password, "patient", Email, SSN)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO PatientPhoneNumber(PatientSSN, PhoneNumber) VALUES(%s, %s)"
+            val = (SSN, PhoneNumber)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO PatientMedicalHistory(PatientSSN, MedicalHistory) VALUES(%s, %s)"
+            val = (SSN,MedicalHistory)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('admin_home.html', message=FirstName + LastName+" has been successfully added to the database")
+        except:
+            return render_template('Add_patient_admin.html', error="Invalid input!")
+
+    else:
+        return render_template('Add_patient_admin.html')
 
 @app.route('/View_lab_employee', methods=['POST', 'GET'])
 def View_lab_employee():
