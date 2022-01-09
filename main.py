@@ -32,6 +32,7 @@ def View_lab_admin():
         }
         return render_template('View_lab_admin.html', data=data)
 
+
 @app.route('/View_lab', methods=['POST', 'GET'])
 def View_lab():
     if request.method == 'GET':
@@ -173,10 +174,11 @@ def Add_patient_admin():
         Insurance = request.form['Insurance']
         Address = request.form['Address']
         PhoneNumber = request.form['PhoneNumber']
-        MedicalHistory=request.form['MedicalHistory']
+        MedicalHistory = request.form['MedicalHistory']
         try:
             sql = "INSERT INTO Patient(SSN,First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance,Address, Email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (SSN, FirstName, MiddleName, LastName, Gender, formatted_date, Insurance, Address, Email)
+            val = (SSN, FirstName, MiddleName, LastName, Gender,
+                   formatted_date, Insurance, Address, Email)
             mycursor.execute(sql, val)
             sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,PatientSSN) VALUES(%s, %s, %s, %s, %s, %s)"
             val = (SSN, Username, Password, "patient", Email, SSN)
@@ -185,7 +187,7 @@ def Add_patient_admin():
             val = (SSN, PhoneNumber)
             mycursor.execute(sql, val)
             sql = "INSERT INTO PatientMedicalHistory(PatientSSN, MedicalHistory) VALUES(%s, %s)"
-            val = (SSN,MedicalHistory)
+            val = (SSN, MedicalHistory)
             mycursor.execute(sql, val)
             mydb.commit()
             return render_template('admin_home.html', message=FirstName + LastName+" has been successfully added to the database")
@@ -225,13 +227,15 @@ def View_report_admin():
         Comments = x[0]
         return render_template('View_report_post_OK.html', data=data, ReportName=ReportName, PublishDate=PublishDate, Referred=Referred, Comments=Comments)
     else:
-        mycursor.execute("SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
+        mycursor.execute(
+            "SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
         All_reports = mycursor.fetchall()
         data = {
             'message': "data retrieved",
-            'All_reports' : All_reports
-            }
+            'All_reports': All_reports
+        }
         return render_template('View_report_admin.html', data=data)
+
 
 @app.route('/View_report_patient', methods=['POST', 'GET'])
 def View_report_patient():
@@ -245,7 +249,32 @@ def View_report_patient():
         }
         return render_template('View_report_patient.html', data=data)
     else:
-        return render_template('View_report_post_OK.html')
+        ReportID = request.form['ReportID']
+        print(ReportID)
+        mycursor.execute(
+            "SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN test WHERE ReportID=%s", (ReportID,))
+        reportinfo = mycursor.fetchall()
+        data = {
+            'message': "data retrieved",
+            'reportinfo': reportinfo
+        }
+        mycursor.execute(
+            "SELECT Name FROM report WHERE ReportID=%s", (ReportID,))
+        x = mycursor.fetchone()
+        ReportName = x[0]
+        mycursor.execute(
+            "SELECT Publish_Date FROM report WHERE ReportID=%s", (ReportID,))
+        x = mycursor.fetchone()
+        PublishDate = x[0]
+        mycursor.execute(
+            "SELECT Referred_By FROM report WHERE ReportID=%s", (ReportID,))
+        x = mycursor.fetchone()
+        Referred = x[0]
+        mycursor.execute(
+            "SELECT Comments FROM report WHERE ReportID=%s", (ReportID,))
+        x = mycursor.fetchone()
+        Comments = x[0]
+        return render_template('View_report_post_OK.html', data=data, ReportName=ReportName, PublishDate=PublishDate, Referred=Referred, Comments=Comments)
 
 
 @app.route('/View_labtech_admin', methods=['POST', 'GET'])
@@ -306,6 +335,7 @@ def View_labtech_admin():
         }
         return render_template('View_labtech_admin.html', data=data)
 
+
 @app.route('/View_labtech_employee', methods=['POST', 'GET'])
 def View_labtech_employee():
     if request.method == 'GET':
@@ -363,6 +393,7 @@ def View_labtech_employee():
             'Dependents': Dependents,
         }
         return render_template('View_labtech_employee.html', data=data)
+
 
 @app.route('/View_labtech_labtech', methods=['POST', 'GET'])
 def View_labtech_labtech():
@@ -422,6 +453,7 @@ def View_labtech_labtech():
         }
         return render_template('View_labtech_labtech.html', data=data)
 
+
 @app.route('/View_employee_emp', methods=['POST', 'GET'])
 def View_employee_emp():
     if request.method == 'GET':
@@ -466,10 +498,12 @@ def View_employee_emp():
         mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM employee AS E JOIN dependents_employee AS D WHERE E.SSN = D.ESSN AND D.ESSN=%s", (EmployeeSSN,))
         depinfo = mycursor.fetchall()
         # Supervised Table
-        mycursor.execute("SELECT S.ID, S.SSN, S.First_Name, S.Middle_Name, S.Last_Name, S.SEX, S.Birthdate FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
+        mycursor.execute(
+            "SELECT S.ID, S.SSN, S.First_Name, S.Middle_Name, S.Last_Name, S.SEX, S.Birthdate FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
         supervisedinfo = mycursor.fetchall()
         # Supervises Table
-        mycursor.execute("SELECT S.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate  FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND S.SSN=%s", (EmployeeSSN,))
+        mycursor.execute(
+            "SELECT S.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate  FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND S.SSN=%s", (EmployeeSSN,))
         supervisesinfo = mycursor.fetchall()
 
         data = {
@@ -483,6 +517,7 @@ def View_employee_emp():
             'supervisesinfo': supervisesinfo
         }
         return render_template('View_employee_emp.html', data=data)
+
 
 @app.route('/View_employee_admin', methods=['POST', 'GET'])
 def View_employee_admin():
@@ -528,10 +563,12 @@ def View_employee_admin():
         mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM employee AS E JOIN dependents_employee AS D WHERE E.SSN = D.ESSN AND D.ESSN=%s", (EmployeeSSN,))
         depinfo = mycursor.fetchall()
         # Supervised Table
-        mycursor.execute("SELECT S.ID, S.SSN, S.First_Name, S.Middle_Name, S.Last_Name, S.SEX, S.Birthdate FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
+        mycursor.execute(
+            "SELECT S.ID, S.SSN, S.First_Name, S.Middle_Name, S.Last_Name, S.SEX, S.Birthdate FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
         supervisedinfo = mycursor.fetchall()
         # Supervises Table
-        mycursor.execute("SELECT S.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate  FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND S.SSN=%s", (EmployeeSSN,))
+        mycursor.execute(
+            "SELECT S.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate  FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN AND S.SSN=%s", (EmployeeSSN,))
         supervisesinfo = mycursor.fetchall()
 
         data = {
@@ -545,6 +582,7 @@ def View_employee_admin():
             'supervisesinfo': supervisesinfo
         }
         return render_template('View_employee_admin.html', data=data)
+
 
 @app.route('/Add_lab_tech', methods=['POST', 'GET'])
 def Add_lab_tech():
@@ -607,6 +645,7 @@ def Add_Report():
     else:
         return render_template('Add_Report.html')
 
+
 @app.route('/Add_report_labtech', methods=['POST', 'GET'])
 def Add_report_labtech():
     if request.method == 'POST':
@@ -645,10 +684,11 @@ def signup():
         Insurance = request.form['Insurance']
         Address = request.form['Address']
         PhoneNumber = request.form['PhoneNumber']
-        MedicalHistory=request.form['MedicalHistory']
+        MedicalHistory = request.form['MedicalHistory']
         try:
             sql = "INSERT INTO Patient(SSN,First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance,Address, Email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (SSN, FirstName, MiddleName, LastName, Gender, formatted_date, Insurance, Address, Email)
+            val = (SSN, FirstName, MiddleName, LastName, Gender,
+                   formatted_date, Insurance, Address, Email)
             mycursor.execute(sql, val)
             sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,PatientSSN) VALUES(%s, %s, %s, %s, %s, %s)"
             val = (SSN, Username, Password, "patient", Email, SSN)
@@ -657,7 +697,7 @@ def signup():
             val = (SSN, PhoneNumber)
             mycursor.execute(sql, val)
             sql = "INSERT INTO PatientMedicalHistory(PatientSSN, MedicalHistory) VALUES(%s, %s)"
-            val = (SSN,MedicalHistory)
+            val = (SSN, MedicalHistory)
             mycursor.execute(sql, val)
             mydb.commit()
             return render_template('login.html', message="You now can login to your account!")
@@ -666,7 +706,6 @@ def signup():
 
     else:
         return render_template('signup.html')
-
 
 
 @app.route('/View_report_labtech', methods=['POST', 'GET'])
@@ -698,12 +737,13 @@ def View_report_labtech():
         Comments = x[0]
         return render_template('View_report_post_OK.html', data=data, ReportName=ReportName, PublishDate=PublishDate, Referred=Referred, Comments=Comments)
     else:
-        mycursor.execute("SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
+        mycursor.execute(
+            "SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
         All_reports = mycursor.fetchall()
         data = {
             'message': "data retrieved",
-            'All_reports' : All_reports
-            }
+            'All_reports': All_reports
+        }
         return render_template('View_report_labtech.html', data=data)
 
 
@@ -822,6 +862,7 @@ def Add_labtech_dependents():
     else:
         return render_template('Add_labtech_dependents.html')
 
+
 @app.route('/Add_labtech_dependents_emp', methods=['POST', 'GET'])
 def Add_labtech_dependents_emp():
     if request.method == 'POST':
@@ -869,7 +910,7 @@ def Add_empdependents():
                    Gender, Relationship, Address, EmployeeSSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+"dependents." )
+            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+"dependents.")
         except:
             return render_template('Add_empdependents', error="Invalid input!")
 
@@ -966,12 +1007,13 @@ def Add_test():
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('labtech_home.html',message="Test "+Test_ID + " has been successfully added to Report " +Report_ID)
+            return render_template('labtech_home.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
-            return render_template('Add_test.html', error= "Invalid input!")
+            return render_template('Add_test.html', error="Invalid input!")
 
     else:
         return render_template('Add_test.html')
+
 
 @app.route('/Add_test_admin', methods=['POST', 'GET'])
 def Add_test_admin():
@@ -994,12 +1036,13 @@ def Add_test_admin():
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message="Test "+Test_ID + " has been successfully added to Report " +Report_ID)
+            return render_template('admin_home.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
-           return render_template('Add_test_admin.html', error= "Invalid input!")
+            return render_template('Add_test_admin.html', error="Invalid input!")
 
     else:
         return render_template('Add_test_admin.html')
+
 
 @app.route('/View_lab_tech', methods=['POST', 'GET'])
 def View_lab_tech():
@@ -1078,7 +1121,6 @@ def Add_lab():
 
     else:
         return render_template('Add_lab.html')
-
 
 
 if __name__ == '__main__':

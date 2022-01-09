@@ -67,7 +67,11 @@
                             {% for l in r %}
                             <td>{{l}}</td>
                             {% endfor %}
-                            <td><button name="report" value="{{l[1]}}" type="submit" class="btn btn-success">Open report</button></td>
+                            <td>
+                                <form action="/View_report_patient" method="POST">
+                                    <button name="ReportID" value="{{r[1]}}" type="submit" class="btn btn-success">Open report</button>
+                                </form>
+                            </td>
                             </tr>
                             {% endfor %} 
 
