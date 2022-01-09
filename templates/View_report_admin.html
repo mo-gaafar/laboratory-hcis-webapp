@@ -10,7 +10,7 @@
 <body>
     {%extends "admin_navbar.html" %}
     {%block content%}
-    <form action="http://127.0.0.1:5000/View_report_labtech" method="POST">
+    <form action="http://127.0.0.1:5000/View_report_admin" method="POST">
         <div class="container mt-5-fluid">
             <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
             <h4>&nbsp;&nbsp;&nbsp;&nbsp;</h4>
@@ -19,7 +19,7 @@
 
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="PatientSSN" class="form-label">Patient Number</label>
+                    <label for="PatientSSN" class="form-label">Patient SSN</label>
                     <input name="PatientNumber" type="number" class="form-control" id="PatientSSN" required >
                 </div>
             </div>
@@ -31,7 +31,16 @@
 
             </div>
             </div>
+        <div class="col-md-2 align-self-end">
 
+        <a href="http://127.0.0.1:5000/Add_Report" class="btn btn-primary">Add Report</a>
+
+            </div>
+        <div class="col-md-2 align-self-end">
+
+        <a href="http://127.0.0.1:5000/Add_test_admin" class="btn btn-primary">Add Test</a>
+
+            </div>
 
             <a href="View_report_post_OK.html">
                 <div class="container mt-5">
@@ -80,15 +89,21 @@
                         {% endfor %}
                     </tbody>
                   </table>
-                  <div class="gap mt-3">
-                    <div class="col mt-12 bg-light text-right">
-                        <button type="submit" class="btn btn-success">Add</button>
-                    </div>
-                        </div>
+
         </div>
     </form>
 
+ {%if message%}
+      <div class="alert alert-success" role="alert">
+        {{message}}
+      </div>
+    {%endif%}
 
+    {%if error%}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
+      </div>
+    {%endif%}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
     {% endblock %}
