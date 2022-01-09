@@ -20,6 +20,7 @@ app = Flask(__name__)
 def Index():
     return render_template('index.html')
 
+
 @app.route('/View_lab_admin', methods=['POST', 'GET'])
 def View_lab_admin():
     if request.method == 'GET':
@@ -30,6 +31,18 @@ def View_lab_admin():
             'labinfo': labinfo
         }
         return render_template('View_lab_admin.html', data=data)
+
+@app.route('/View_lab', methods=['POST', 'GET'])
+def View_lab():
+    if request.method == 'GET':
+        mycursor.execute("SELECT * FROM Lab")
+        labinfo = mycursor.fetchall()
+        data = {
+            'message': "data retrieved",
+            'labinfo': labinfo
+        }
+        return render_template('View_lab.html', data=data)
+
 
 @app.route('/View_lab_employee', methods=['POST', 'GET'])
 def View_lab_employee():
@@ -42,6 +55,7 @@ def View_lab_employee():
         }
         return render_template('View_lab_employee.html', data=data)
 
+
 @app.route('/View_lab_labtech', methods=['POST', 'GET'])
 def View_lab_labtech():
     if request.method == 'GET':
@@ -53,6 +67,7 @@ def View_lab_labtech():
         }
         return render_template('View_lab_labtech.html', data=data)
 
+
 @app.route('/View_lab_patient', methods=['POST', 'GET'])
 def View_lab_patient():
     if request.method == 'GET':
@@ -63,6 +78,8 @@ def View_lab_patient():
             'labinfo': labinfo
         }
         return render_template('View_lab_patient.html', data=data)
+
+
 @app.route('/Add_lab_tech_admin', methods=['POST', 'GET'])
 def Add_lab_tech_admin():
     if request.method == 'POST':
@@ -101,6 +118,7 @@ def Add_lab_tech_admin():
     else:
         return render_template('Add_lab_tech_admin.html')
 
+
 @app.route('/Add_lab_tech_emp', methods=['POST', 'GET'])
 def Add_lab_tech_emp():
     if request.method == 'POST':
@@ -138,6 +156,8 @@ def Add_lab_tech_emp():
             return render_template('Add_lab_tech_emp.html', error="Invalid input!")
     else:
         return render_template('Add_lab_tech_emp.html')
+
+
 @app.route('/Add_patient_admin', methods=['POST', 'GET'])
 def Add_patient_admin():
     if request.method == 'POST':
@@ -174,38 +194,61 @@ def Add_patient_admin():
 
     else:
         return render_template('Add_patient_admin.html')
-    @app.route('/View_report_admin', methods=['POST', 'GET'])
+
+
+@app.route('/View_report_admin', methods=['POST', 'GET'])
 def View_report_admin():
     if request.method == 'POST':
         PatientNumber = request.form['PatientNumber']
         ReportID = request.form['ReportID']
-        mycursor.execute("SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN patient JOIN test WHERE R.Patient_SSN = SSN AND ReportID = Report_ID AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+        mycursor.execute("SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN patient JOIN test WHERE R.Patient_SSN = SSN AND ReportID = Report_ID AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         reportinfo = mycursor.fetchall()
         data = {
             'message': "data retrieved",
             'reportinfo': reportinfo
         }
         mycursor.execute(
-            "SELECT Name FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Name FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         ReportName = x[0]
         mycursor.execute(
-            "SELECT Publish_Date FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Publish_Date FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         PublishDate = x[0]
         mycursor.execute(
-            "SELECT Referred_By FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Referred_By FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         Referred = x[0]
         mycursor.execute(
-            "SELECT Comments FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Comments FROM report JOIN patient WHERE Patient_SSN = SSN AND patient.SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         Comments = x[0]
-        # ReportName=ReportName #data=data
         return render_template('View_report_post_OK.html', data=data, ReportName=ReportName, PublishDate=PublishDate, Referred=Referred, Comments=Comments)
     else:
-        return render_template('View_report_admin.html')
-    @app.route('/View_labtech_admin', methods=['POST', 'GET'])
+        mycursor.execute("SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
+        All_reports = mycursor.fetchall()
+        data = {
+            'message': "data retrieved",
+            'All_reports' : All_reports
+            }
+        return render_template('View_report_admin.html', data=data)
+
+@app.route('/View_report_patient', methods=['POST', 'GET'])
+def View_report_patient():
+    if request.method == 'GET':
+        mycursor.execute(
+            "SELECT  Publish_Date, ReportID, Name FROM report JOIN patient WHERE Patient_SSN = SSN")
+        reportinfo = mycursor.fetchall()
+        data = {
+            'message': "data retrieved",
+            'reportinfo': reportinfo
+        }
+        return render_template('View_report_patient.html', data=data)
+    else:
+        return render_template('View_report_post_OK.html')
+
+
+@app.route('/View_labtech_admin', methods=['POST', 'GET'])
 def View_labtech_admin():
     if request.method == 'GET':
         # Personal info
@@ -542,21 +585,6 @@ def Add_lab_tech():
         return render_template('Add_lab_tech.html')
 
 
-@app.route('/View_report_patient', methods=['POST', 'GET'])
-def View_report_patient():
-    if request.method == 'GET':
-        mycursor.execute(
-            "SELECT  Publish_Date, ReportID, Name FROM report JOIN patient WHERE Patient_SSN = SSN")
-        reportinfo = mycursor.fetchall()
-        data = {
-            'message': "data retrieved",
-            'reportinfo': reportinfo
-        }
-        return render_template('View_report_patient.html', data=data)
-    else:
-        return render_template('View_report_post_OK.html')
-
-
 @app.route('/Add_Report', methods=['POST', 'GET'])
 def Add_Report():
     if request.method == 'POST':
@@ -624,32 +652,37 @@ def View_report_labtech():
     if request.method == 'POST':
         PatientNumber = request.form['PatientNumber']
         ReportID = request.form['ReportID']
-        mycursor.execute("SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN patient JOIN test WHERE R.Patient_SSN = SSN AND ReportID = Report_ID AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+        mycursor.execute("SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN patient JOIN test WHERE R.Patient_SSN = SSN AND ReportID = Report_ID AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         reportinfo = mycursor.fetchall()
         data = {
             'message': "data retrieved",
             'reportinfo': reportinfo
         }
         mycursor.execute(
-            "SELECT Name FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Name FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         ReportName = x[0]
         mycursor.execute(
-            "SELECT Publish_Date FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Publish_Date FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         PublishDate = x[0]
         mycursor.execute(
-            "SELECT Referred_By FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Referred_By FROM report JOIN patient WHERE Patient_SSN = SSN AND SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         Referred = x[0]
         mycursor.execute(
-            "SELECT Comments FROM report JOIN patient WHERE Patient_SSN = SSN AND Patient_Number=%s AND ReportID=%s", (PatientNumber, ReportID))
+            "SELECT Comments FROM report JOIN patient WHERE Patient_SSN = SSN AND patient.SSN=%s AND ReportID=%s", (PatientNumber, ReportID))
         x = mycursor.fetchone()
         Comments = x[0]
-        # ReportName=ReportName #data=data
         return render_template('View_report_post_OK.html', data=data, ReportName=ReportName, PublishDate=PublishDate, Referred=Referred, Comments=Comments)
     else:
-        return render_template('View_report_labtech.html')
+        mycursor.execute("SELECT ReportID,SSN,Name FROM report JOIN patient ON Patient_SSN = SSN")
+        All_reports = mycursor.fetchall()
+        data = {
+            'message': "data retrieved",
+            'All_reports' : All_reports
+            }
+        return render_template('View_report_labtech.html', data=data)
 
 
 @app.route('/View_report_post_OK', methods=['POST', 'GET'])
@@ -948,18 +981,6 @@ def View_lab_tech():
             'Dependents': Dependents,
         }
         return render_template('View_lab_tech.html', data=data)
-
-
-@app.route('/View_lab', methods=['POST', 'GET'])
-def View_lab():
-    if request.method == 'GET':
-        mycursor.execute("SELECT * FROM Lab")
-        labinfo = mycursor.fetchall()
-        data = {
-            'message': "data retrieved",
-            'labinfo': labinfo
-        }
-        return render_template('View_lab.html', data=data)
 
 
 @app.route('/Add_lab', methods=['POST', 'GET'])
