@@ -18,7 +18,7 @@
         <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
         <h1>View Lab Technicians</h1>
         <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-        <form action="http://127.0.0.1:5000/View_lab_tech" method="POST">
+        <form action="http://127.0.0.1:5000/View_lab_tech" method="POST"><form action="{ { url_for('View_lab_tech') } }" method="POST">
         <div class="container">
             <div class="row searchFilter">
                 <form class="row g-3">
@@ -70,9 +70,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 align-self-end">
+                    <p></p>
+                    <div class="col-md-6 align-self-end">
 
-              <a href="http://127.0.0.1:5000/Add_lab_tech_admin" class="btn btn-primary">Add New</a>
+              <a href="http://127.0.0.1:5000/Add_lab_tech_admin" class="btn btn-primary">Add Lab Technician</a>
+
+                    </div>
+                    <p></p>
+                     <div class="col-md-2 align-self-end">
+
+              <a href="http://127.0.0.1:5000/Add_labtech_dependents" class="btn btn-primary">Add Dependent</a>
 
                     </div>
 
