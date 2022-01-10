@@ -31,6 +31,16 @@
                <div class="field">
                   <input type="submit" value="LOGIN">
                </div>
+               <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+               {%if message%}
+               <div class="alert alert-success" role="alert">
+                 {{message}}
+               </div>
+             {%endif%}
+         
+             {%if error%}
+               <div class="alert alert-danger" role="alert">
+                 {{error}}
             </form>
 
             <div class="signup">
@@ -41,15 +51,7 @@
       </div>
 
 
-          {%if message%}
-      <div class="alert alert-success" role="alert">
-        {{message}}
-      </div>
-    {%endif%}
-
-    {%if error%}
-      <div class="alert alert-danger" role="alert">
-        {{error}}
+         
       </div>
     {%endif%}
       <script>
