@@ -25,6 +25,35 @@ app.config["SECRET_KEY"] = "uf_a0HhSlHAneZoA0Xe8Gw"
 def Index():
     return render_template('index.html')
 
+@app.route('/Forgotpassword', methods=['POST', 'GET'])
+def Forgotpassword():
+    if request.method == 'POST':
+        Email_check = request.form['Email_check']
+        resp = make_response(redirect('/Newpassword'))
+        resp.set_cookie('Email_check', Email_check)
+        return resp
+    else:
+        return render_template('Forgotpassword.html')
+
+
+@app.route('/Newpassword', methods=['POST', 'GET'])
+def Newpassword():
+    if request.method == 'POST':
+        Email_check = request.cookies.get('Email_check')       
+        newPass = request.form['newPass']  
+        newPass2 = request.form['newPass2']
+        if newPass == newPass2:
+            sql = "UPDATE user SET Password=%s WHERE user.Email=%s"
+            val = (newPass,Email_check)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('login.html', message= 'Your password has been reset succesfully')
+        else:
+            return render_template('NewPassword.html', error="Error! Passwords Do Not Match!" )
+    else:
+        #print(request.cookies.get('Email_check'))
+        return render_template('Newpassword.html')
+
 
 @app.route('/View_lab_admin', methods=['POST', 'GET'])
 def View_lab_admin():
