@@ -1,6 +1,6 @@
 # main.py
 import mysql.connector
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, session
 
 from datetime import datetime
 now = datetime.now()
@@ -14,6 +14,9 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 app = Flask(__name__)
+
+#
+app.config["SECRET_KEY"] = "uf_a0HhSlHAneZoA0Xe8Gw"
 
 
 @app.route('/')
@@ -814,6 +817,7 @@ def Login():
     if request.method == 'POST':
         Email = request.form['Email']
         Password = request.form['Password']
+
         mycursor.execute(
             "SELECT Permission_Level FROM User WHERE Email=%s AND Password=%s", (Email, Password))
         permission = mycursor.fetchone()
@@ -822,6 +826,14 @@ def Login():
                 "SELECT Username FROM User WHERE Email=%s AND Password=%s", (Email, Password))
             x = mycursor.fetchone()
             username = x[0]
+
+            userssn = mycursor.execute(
+                "SELECT User_SSN FROM user WHERE Username = %s"(username,))
+            # SETTING SESSION VARIABLES
+            session["USERNAME"] = username
+            session["PERMISSION"] = permission
+            session["USERSSN"] = userssn
+            # DERIVING NAME BASED ON USERPERMISSION VARIABLE
             if permission == ('admin',):
                 return render_template('admin_home.html', message="Welcome " + username, username=username)
             if permission == ('employee',):
@@ -834,6 +846,16 @@ def Login():
             return render_template('Login.html', error="Incorrect Email or Password!")
     else:
         return render_template('Login.html')
+
+
+@app.route('/Logout', methods=['POST', 'GET'])
+def Logout():
+    #CLEARS SESSION ON LOGOUT
+    session.pop("USERNAME", None)
+    session.pop("PERMISSION", None)
+    session.pop("USERSSN", None)
+
+    return redirect(url_for("Login"))
 
 
 @app.route('/Add_labtech_dependents', methods=['POST', 'GET'])
