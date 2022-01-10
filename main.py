@@ -13,17 +13,66 @@ mydb = mysql.connector.connect(
     database="Laboratory_Department"  # here
 )
 
-#cursor = cnx.cursor(buffered=True)
+
+# Enable cursor buffering
 mycursor = mydb.cursor(buffered=True)
 app = Flask(__name__)
 
-#
+# Session encryption key
 app.config["SECRET_KEY"] = "uf_a0HhSlHAneZoA0Xe8Gw"
+
+# Initialize navbar inheritance dictionary
+
+
+@app.context_processor
+def injectnavbarhtml():
+    NavbarDict = {
+        ('patient',): 'patient_navbar.html',
+        ('labtechnician',): 'labtech_navbar.html',
+        ('admin',): 'admin_navbar.html',
+        ('employee',): 'hr_navbar.html',
+        None: 'patient_navbar.html'
+    }
+    # print(NavbarDict[session.get("PERMISSION", None)])
+    string = NavbarDict[session.get("PERMISSION", None)]
+    return dict(navbarhtml=string)
 
 
 @app.route('/')
 def Index():
     return render_template('index.html')
+
+
+@app.route('/Home', methods=['POST', 'GET'])
+def Home():
+    # TODO: PASS USER INFORMATION THROUGH THIS ROUTE
+    if request.method == 'GET':
+
+        # patient
+        # lab tech
+        # admin and HR(employee)
+
+        # TODO: fix this in frontend and HOME route
+        # if permission == ('admin',):
+        #     return render_template('admin_home.html', message="Welcome " + username, username=username)
+        # if permission == ('employee',):
+        #     return render_template('employee_home.html', message="Welcome " + username, username=username)
+        # if permission == ('labtechnician',):
+        #     return render_template('labtech_home.html', message="Welcome " + username, username=username)
+        # if permission == ('patient',):
+        #     return render_template('patient_home.html', message="Welcome " + username, username=username)
+
+        permission = session.get("PERMISSION", None)
+
+        print(permission)
+        print("returned to homepage")
+
+        if permission == ('labtechnician',):
+            return render_template("Home_labtech.html")
+        elif permission == ('employee',) or permission == ('admin',):
+            return render_template("Home_admin.html")
+        elif permission == ('patient',):
+            return render_template("Home_patient.html")
 
 
 @app.route('/View_lab_admin', methods=['POST', 'GET'])
@@ -86,6 +135,8 @@ def View_lab_patient():
         return render_template('View_lab_patient.html', data=data)
 
 
+# TODO: CHECK REDIRECT MESSAGE
+
 @app.route('/Add_lab_tech_admin', methods=['POST', 'GET'])
 def Add_lab_tech_admin():
     if request.method == 'POST':
@@ -118,7 +169,9 @@ def Add_lab_tech_admin():
             val = (SSN, Username, Password, "labtechnician", EmailAddress, SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+            print('Labtech added by')
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return redirect('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
         except:
             return render_template('Add_lab_tech_admin.html', error="Invalid input!")
     else:
@@ -157,7 +210,8 @@ def Add_lab_tech_emp():
             val = (SSN, Username, Password, "labtechnician", EmailAddress, SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('employee_home.html', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+                        #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
         except:
             return render_template('Add_lab_tech_emp.html', error="Invalid input!")
     else:
@@ -195,7 +249,7 @@ def Add_patient_admin():
             val = (SSN, MedicalHistory)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + LastName+" has been successfully added to the database")
+            return render_template('/Home', message=FirstName + LastName+" has been successfully added to the database")
         except:
             return render_template('Add_patient_admin.html', error="Invalid input!")
 
@@ -247,7 +301,7 @@ def View_report_patient():
     if request.method == 'GET':
         print(session.get("USERSSN", None))
         mycursor.execute(
-            "SELECT  Publish_Date, ReportID, Name FROM report JOIN patient WHERE Patient_SSN = %s", (session.get("USERSSN", None),))
+            "SELECT Publish_Date, ReportID, Name FROM report JOIN patient ON Patient_SSN = SSN  WHERE Patient_SSN = %s", (session.get("USERSSN", None),))
         reportinfo = mycursor.fetchall()
         data = {
             'message': "data retrieved",
@@ -260,7 +314,7 @@ def View_report_patient():
         ReportID = request.form['ReportID']
         print(ReportID)
         mycursor.execute(
-            "SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN test WHERE ReportID=%s", (ReportID,))
+            "SELECT Test_Name, Value, Reference_Range FROM report AS R JOIN test ON ReportID = Report_ID WHERE ReportID=%s", (ReportID,))
         reportinfo = mycursor.fetchall()
         data = {
             'message': "data retrieved",
@@ -624,7 +678,8 @@ def Add_lab_tech():
             val = (SSN, Username, Password, "labtechnician", EmailAddress, SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+            #TODO: redirect('/Home') +messsages or errors
         except:
             return render_template('Add_lab_tech.html', error="Invalid input!")
     else:
@@ -646,7 +701,8 @@ def Add_Report():
                    Reffered_By, Comments, Patient_SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=ReportID + " has been successfully added to the database")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_Report.html', error="Invalid input!")
 
@@ -669,7 +725,8 @@ def Add_report_labtech():
                    Reffered_By, Comments, Patient_SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('labtech_home.html', message=ReportID + " has been successfully added to the database")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_report_labtech.html', error="Invalid input!")
 
@@ -810,7 +867,8 @@ def Add_employee():
             val = (SSN, Username, Password, PermissionLevel, EmailAddress, SSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been successfully added to the database")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database")
         except:
             return render_template('Add_employee.html', error="Invalid input!")
     else:
@@ -843,15 +901,20 @@ def Login():
             print(session.get("USERNAME", None))
             print(session.get("PERMISSION", None))
             print(session.get("USERSSN", None))
+
+            # TODO: SEND MESSAGE AND ERROR THROUGH REDIRECT
             # DERIVING NAME BASED ON USERPERMISSION VARIABLE
-            if permission == ('admin',):
-                return render_template('admin_home.html', message="Welcome " + username, username=username)
-            if permission == ('employee',):
-                return render_template('employee_home.html', message="Welcome " + username, username=username)
-            if permission == ('labtechnician',):
-                return render_template('labtech_home.html', message="Welcome " + username, username=username)
-            if permission == ('patient',):
-                return render_template('patient_home.html', message="Welcome " + username, username=username)
+            return redirect('/Home')
+
+            # TODO: fix this in frontend and HOME route
+            # if permission == ('admin',):
+            #     return render_template('admin_home.html', message="Welcome " + username, username=username)
+            # if permission == ('employee',):
+            #     return render_template('employee_home.html', message="Welcome " + username, username=username)
+            # if permission == ('labtechnician',):
+            #     return render_template('labtech_home.html', message="Welcome " + username, username=username)
+            # if permission == ('patient',):
+            #     return render_template('patient_home.html', message="Welcome " + username, username=username)
         else:
             return render_template('Login.html', error="Incorrect Email or Password!")
     else:
@@ -887,7 +950,8 @@ def Add_labtech_dependents():
                    Gender, Address, Relationship, LabtechSSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been successfully added to the database")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database")
         except:
             return render_template('Add_labtech_dependents.html', error="Invalid input!")
 
@@ -914,7 +978,8 @@ def Add_labtech_dependents_emp():
                    Gender, Address, Relationship, LabtechSSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('employee_home.html', message=FirstName + ' ' + LastName + " has been successfully added to the database.")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database.")
         except:
 
             return render_template('Add_labtech_dependents_emp.html', error="Invalid input!")
@@ -942,7 +1007,8 @@ def Add_empdependents():
                    Gender, Relationship, Address, EmployeeSSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+"dependents.")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+"dependents.")
         except:
             return render_template('Add_empdependents', error="Invalid input!")
 
@@ -1018,6 +1084,12 @@ def View_employee():
         return render_template('View_employee.html', data=data)
 
 
+@app.route('/ContactUs', methods=['POST', 'GET'])
+def ContactUs():
+    if request.method == 'GET':
+        return render_template("ContactUs.html")
+
+
 @app.route('/Add_test', methods=['POST', 'GET'])
 def Add_test():
     if request.method == 'POST':
@@ -1033,13 +1105,22 @@ def Add_test():
         Patient_SSN = request.form['Patient_SSN']
         Report_ID = request.form['Report_ID']
         Lab_No = request.form['Lab_No']
+        # TODO: ADMIN DOES NOT ADD TEST YET (ADD INPUT TO ADMIN?? OR KEEP IT NULL)
+        LabtechSSN = session.get("USERSSN", None)
         try:
             sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             val = (Test_ID, Test_Name, Category, Value, Start_Date, End_Date,
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
+            # TODO: ADD TO CONDUCTS RELATIONSHIP (testid and labtech id) using session cookies note:remember quotations in ssn
+
+            sql = "INSERT INTO conducts(TestID,LabTechSSn) VALUES(%s, %s)"
+            val = (Test_ID, LabtechSSN)
+            mycursor.execute(sql, val)
+
             mydb.commit()
-            return render_template('labtech_home.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
             return render_template('Add_test.html', error="Invalid input!")
 
@@ -1068,7 +1149,8 @@ def Add_test_admin():
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+                        #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
             return render_template('Add_test_admin.html', error="Invalid input!")
 
@@ -1147,7 +1229,8 @@ def Add_lab():
             val = (labnum, labname, labtype, lablocation)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('admin_home.html', message="Lab " + labname + " has been successfully added to the labs table.")
+            #TODO: Fix redirecting in /home route so it can send message or error
+            return render_template('/Home', message="Lab " + labname + " has been successfully added to the labs table.")
         except:
             return render_template('Add_lab.html', error="Invalid input!")
 
