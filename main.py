@@ -762,12 +762,153 @@ def View_report_post_OK():
 
 @app.route('/Add_new_equipment', methods=['POST', 'GET'])
 def Add_new_equipment():
-    return render_template('Add_new_equipment.html')
+    if request.method == 'POST':
+        Serial_Number = request.form['Serial_Number']
+        Device_Name = request.form['Device_Name']
+        Model = request.form['Model']
+        ManufacturerName = request.form['ManufacturerName']
+        Manufacturer_ID = request.form['Manufacturer_ID']
+        ManufacturingDate = request.form['ManufacturingDate']
+        Department = request.form['Department']
+        Inventory_ID = request.form['Inventory_ID']
+        Status = request.form['Status']
+        IPMMaintenance = request.form['IPMMaintenance']
+        Test_Name = request.form['Test_Name']
+        Test_Type = request.form['Test_Type']
+       
+        
+        # try:
+        sql = "INSERT INTO equipment (Serial_Number,Inventory_ID,Department,Device_Name,Test_Name,Test_Type,Status,IPMMaintenance,Manufacturer_ID,Model,ManufacturerName,ManufacturingDate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        val= (Serial_Number,Inventory_ID,Department,Device_Name,Test_Name,Test_Type,Status,IPMMaintenance,Manufacturer_ID,Model,ManufacturerName,ManufacturingDate)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        return render_template('Add_new_equipment.html', message=Device_Name  + " has been succesfuly added to new equipment.")
+        # except:
+            # return render_template('Add_new_equipment.html', error="Invalid input!")
+    else:
+        return render_template('Add_new_equipment.html')
 
+@app.route('/Add_consumables', methods=['POST', 'GET'])
+def Add_consumables():
+    if request.method == 'POST':
+        Name = request.form['Name']
+        Stock = request.form['Stock']
+        InventoryID = request.form['InventoryID']
+        SupplierContact = request.form['SupplierContact']
+        EquipSSN = request.form['EquipSSN']
+       
+        try:
+            sql = "INSERT INTO consumables (Name,Stock,InventoryID,SupplierContact) VALUES(%s,%s,%s,%s)"
+            val = (Name, Stock,InventoryID,SupplierContact)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            sql = "INSERT INTO uses (Consumables_Name,EquipmentSerialNUmber) VALUES(%s,%s)"
+            val = (Name,EquipSSN)
+            mycursor.execute(sql, val)
+            return render_template('Add_consumables.html', message=  Name + " has been successfully added to the consumables table.")
+        except:
+            return render_template('Add_consumables.html', error="Invalid input!")
+
+    else:
+        return render_template('Add_consumables.html')
+    
+    @app.route('/viewequipment', methods=['POST', 'GET'])
+def viewequipment():
+     if request.method == 'GET':
+        # Personal info
+        mycursor.execute("SELECT Serial_Number, Device_Name,Model FROM equipment")
+        DeviceInformation = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute("SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment")
+        ManufacturerInformation = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute("SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment")
+        InstitutionalInformation = mycursor.fetchall()
+        # Supervisor Table
+        mycursor.execute("SELECT Test_Name, Test_Type FROM equipment")
+        TestInformation = mycursor.fetchall()
+        mycursor.execute("SELECT Device_Name, Serial_Number FROM equipment")
+        EquipmentList = mycursor.fetchall()
+       
+
+
+
+        data = {
+            'message': "data retrieved",
+            'DeviceInformation': DeviceInformation,
+            'ManufacturerInformation': ManufacturerInformation,
+            'InstitutionalInformation': InstitutionalInformation,
+            'TestInformation': TestInformation,
+            'EquipmentList': EquipmentList
+            }
+        
+        return render_template('viewequipment.html', data=data)
+     else:
+        Serial_Number = request.form['Serial_Number']
+        # Personal info
+        mycursor.execute("SELECT Serial_Number, Device_Name,Model FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        DeviceInformation = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute("SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        ManufacturerInformation = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute("SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        InstitutionalInformation = mycursor.fetchall()
+        # Supervisor Table
+        mycursor.execute("SELECT Test_Name, Test_Type FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        TestInformation = mycursor.fetchall()
+        # Dependents Table
+        mycursor.execute("SELECT Device_Name, Serial_Number FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        EquipmentList = mycursor.fetchall()
+        # Supervised Table
+       
+
+
+        data = {
+            'message': "data retrieved",
+            'DeviceInformation': DeviceInformation,
+            'ManufacturerInformation': ManufacturerInformation,
+            'InstitutionalInformation': InstitutionalInformation,
+            'TestInformation': TestInformation,
+            'EquipmentList': EquipmentList
+        }
+        return render_template('viewequipment.html', data=data)
+    
+    
+    
+    @app.route('/viewconsumables', methods=['POST', 'GET'])
+def viewconsumables():
+     if request.method == 'GET':
+        # Personal info
+        mycursor.execute("SELECT Name, Stock,SupplierContact,InventoryID FROM consumables")
+        ConsumableInformation = mycursor.fetchall()
+       
+        # Basic Info Button
+  
+    
+        data = {
+            'message': "data retrieved",
+            'ConsumableInformation': ConsumableInformation
+            }
+        
+        return render_template('viewconsumables.html', data=data)
+     else:
+        InventoryID = request.form['InventoryID']
+        # Personal info
+        mycursor.execute("SELECT Name, Stock,SupplierContact,InventoryID FROM consumables WHERE InventoryID=%s", (InventoryID,))
+        ConsumableInformation = mycursor.fetchall()
+    
+
+        data = {
+            'message': "data retrieved",
+            'ConsumableInformation': ConsumableInformation
+        }
+        return render_template('viewconsumables.html', data=data)
 
 @app.route('/Edit_equipment', methods=['POST', 'GET'])
 def Edit_equipment():
     return render_template('Edit_equipment.html')
+
 
 
 @app.route('/Add_employee', methods=['POST', 'GET'])
