@@ -12,7 +12,9 @@ mydb = mysql.connector.connect(
     passwd="tamerbasha.2024",  # write ur own password
     database="Laboratory_Department"  # here
 )
-mycursor = mydb.cursor()
+
+#cursor = cnx.cursor(buffered=True)
+mycursor = mydb.cursor(buffered=True)
 app = Flask(__name__)
 
 #
@@ -47,42 +49,6 @@ def View_lab():
         }
         return render_template('View_lab.html', data=data)
 
-@app.route('/Add_patient_admin', methods=['POST', 'GET'])
-def Add_patient_admin():
-    if request.method == 'POST':
-        Username = request.form['Username']
-        Email = request.form['Email']
-        Password = request.form['Password']
-        FirstName = request.form['FirstName']
-        MiddleName = request.form['MiddleName']
-        LastName = request.form['LastName']
-        Gender = request.form['Gender']
-        formatted_date = request.form['Birthdate']
-        SSN = request.form['SSN']
-        Insurance = request.form['Insurance']
-        Address = request.form['Address']
-        PhoneNumber = request.form['PhoneNumber']
-        MedicalHistory=request.form['MedicalHistory']
-        try:
-            sql = "INSERT INTO Patient(SSN,First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance,Address, Email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (SSN, FirstName, MiddleName, LastName, Gender, formatted_date, Insurance, Address, Email)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,PatientSSN) VALUES(%s, %s, %s, %s, %s, %s)"
-            val = (SSN, Username, Password, "patient", Email, SSN)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO PatientPhoneNumber(PatientSSN, PhoneNumber) VALUES(%s, %s)"
-            val = (SSN, PhoneNumber)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO PatientMedicalHistory(PatientSSN, MedicalHistory) VALUES(%s, %s)"
-            val = (SSN,MedicalHistory)
-            mycursor.execute(sql, val)
-            mydb.commit()
-            return render_template('admin_home.html', message=FirstName + LastName+" has been successfully added to the database")
-        except:
-            return render_template('Add_patient_admin.html', error="Invalid input!")
-
-    else:
-        return render_template('Add_patient_admin.html')
 
 @app.route('/View_lab_employee', methods=['POST', 'GET'])
 def View_lab_employee():
@@ -279,15 +245,18 @@ def View_report_admin():
 @app.route('/View_report_patient', methods=['POST', 'GET'])
 def View_report_patient():
     if request.method == 'GET':
+        print(session.get("USERSSN", None))
         mycursor.execute(
-            "SELECT  Publish_Date, ReportID, Name FROM report JOIN patient WHERE Patient_SSN = SSN")
+            "SELECT  Publish_Date, ReportID, Name FROM report JOIN patient WHERE Patient_SSN = %s", (session.get("USERSSN", None),))
         reportinfo = mycursor.fetchall()
         data = {
             'message': "data retrieved",
             'reportinfo': reportinfo
         }
+        # TODO: user session variable in queries
         return render_template('View_report_patient.html', data=data)
     else:
+
         ReportID = request.form['ReportID']
         print(ReportID)
         mycursor.execute(
@@ -862,13 +831,18 @@ def Login():
                 "SELECT Username FROM User WHERE Email=%s AND Password=%s", (Email, Password))
             x = mycursor.fetchone()
             username = x[0]
-
-            userssn = mycursor.execute(
-                "SELECT User_SSN FROM user WHERE Username = %s"(username,))
+            # print(username)
+            mycursor.execute(
+                "SELECT User_SSN FROM user WHERE Username = %s", (username,))
+            x = mycursor.fetchone()
+            userssn = x[0]
             # SETTING SESSION VARIABLES
             session["USERNAME"] = username
             session["PERMISSION"] = permission
             session["USERSSN"] = userssn
+            print(session.get("USERNAME", None))
+            print(session.get("PERMISSION", None))
+            print(session.get("USERSSN", None))
             # DERIVING NAME BASED ON USERPERMISSION VARIABLE
             if permission == ('admin',):
                 return render_template('admin_home.html', message="Welcome " + username, username=username)
@@ -886,7 +860,7 @@ def Login():
 
 @app.route('/Logout', methods=['POST', 'GET'])
 def Logout():
-    #CLEARS SESSION ON LOGOUT
+    # CLEARS SESSION ON LOGOUT
     session.pop("USERNAME", None)
     session.pop("PERMISSION", None)
     session.pop("USERSSN", None)
@@ -1179,6 +1153,8 @@ def Add_lab():
 
     else:
         return render_template('Add_lab.html')
+
+
 @app.route('/View_patient_labtech', methods=['POST', 'GET'])
 def View_patient_labtech():
     if request.method == 'GET':
@@ -1222,7 +1198,7 @@ def View_patient_labtech():
         contactinfo = mycursor.fetchall()
         # Medical History
         mycursor.execute(
-             "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
+            "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
         Medicalinfo = mycursor.fetchall()
 
         data = {
@@ -1230,10 +1206,12 @@ def View_patient_labtech():
             'personalinfo': personalinfo,
             'basicinfo': basicinfo,
             'contactinfo': contactinfo,
-            'Medicalinfo':Medicalinfo,
+            'Medicalinfo': Medicalinfo,
 
         }
         return render_template('View_patient_labtech.html', data=data)
+
+
 @app.route('/View_patient', methods=['POST', 'GET'])
 def View_patient():
     if request.method == 'GET':
@@ -1277,7 +1255,7 @@ def View_patient():
         contactinfo = mycursor.fetchall()
         # Medical History
         mycursor.execute(
-             "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
+            "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
         Medicalinfo = mycursor.fetchall()
 
         data = {
@@ -1285,10 +1263,11 @@ def View_patient():
             'personalinfo': personalinfo,
             'basicinfo': basicinfo,
             'contactinfo': contactinfo,
-            'Medicalinfo':Medicalinfo,
+            'Medicalinfo': Medicalinfo,
 
         }
         return render_template('View_patient.html', data=data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

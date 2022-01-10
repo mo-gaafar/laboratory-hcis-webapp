@@ -84,7 +84,7 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
                             viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                         </svg>
-                        <span class="align-text-top">John Doe</span>
+                        <span class="align-text-top">{{session.get("USERNAME",None)}}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>
@@ -92,7 +92,7 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="/Logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -213,7 +213,7 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
         </a>
     </button>
     <button type="button" class="btn btn-dark  " style="width: 100%;">
-        <a href="http://127.0.0.1:5000/Login" class="nav-item nav-link link-danger bold text-start">
+        <a href="/Logout" class="nav-item nav-link link-danger bold text-start">
             <span class="p-2 ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left"
                     viewBox="0 0 16 16">
