@@ -47,6 +47,42 @@ def View_lab():
         }
         return render_template('View_lab.html', data=data)
 
+@app.route('/Add_patient_admin', methods=['POST', 'GET'])
+def Add_patient_admin():
+    if request.method == 'POST':
+        Username = request.form['Username']
+        Email = request.form['Email']
+        Password = request.form['Password']
+        FirstName = request.form['FirstName']
+        MiddleName = request.form['MiddleName']
+        LastName = request.form['LastName']
+        Gender = request.form['Gender']
+        formatted_date = request.form['Birthdate']
+        SSN = request.form['SSN']
+        Insurance = request.form['Insurance']
+        Address = request.form['Address']
+        PhoneNumber = request.form['PhoneNumber']
+        MedicalHistory=request.form['MedicalHistory']
+        try:
+            sql = "INSERT INTO Patient(SSN,First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance,Address, Email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (SSN, FirstName, MiddleName, LastName, Gender, formatted_date, Insurance, Address, Email)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,PatientSSN) VALUES(%s, %s, %s, %s, %s, %s)"
+            val = (SSN, Username, Password, "patient", Email, SSN)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO PatientPhoneNumber(PatientSSN, PhoneNumber) VALUES(%s, %s)"
+            val = (SSN, PhoneNumber)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO PatientMedicalHistory(PatientSSN, MedicalHistory) VALUES(%s, %s)"
+            val = (SSN,MedicalHistory)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('admin_home.html', message=FirstName + LastName+" has been successfully added to the database")
+        except:
+            return render_template('Add_patient_admin.html', error="Invalid input!")
+
+    else:
+        return render_template('Add_patient_admin.html')
 
 @app.route('/View_lab_employee', methods=['POST', 'GET'])
 def View_lab_employee():
@@ -1143,7 +1179,116 @@ def Add_lab():
 
     else:
         return render_template('Add_lab.html')
+@app.route('/View_patient_labtech', methods=['POST', 'GET'])
+def View_patient_labtech():
+    if request.method == 'GET':
+        # Personal info
+        mycursor.execute(
+            "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance  FROM patient")
+        personalinfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute(
+            "select SSN,First_Name,Last_Name,Username,patient.Email,Password from patient join user where SSN=User_SSN")
+        basicinfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute(
+            "select SSN,First_Name,Last_Name,Address,PhoneNumber from patient join patientphonenumber where SSN=PatientSSN")
+        contactinfo = mycursor.fetchall()
 
+        data = {
+            'message': "data retrieved",
+            'personalinfo': personalinfo,
+            'basicinfo': basicinfo,
+            'contactinfo': contactinfo,
+
+        }
+        return render_template('View_patient_labtech.html', data=data)
+    else:
+        PatientSSN = request.form['PatientSSN']
+        # Personal info
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name, p.Middle_Name, p.Last_Name, p.SEX, p.Birthdate, p.Insurance FROM patient As p where p.SSN=%s",
+            (PatientSSN,))
+        personalinfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name,p.Last_Name,Username,Password, user.Email FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
+            (PatientSSN,))
+        basicinfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name,p.Last_Name,p.Address,PhoneNumber FROM patient AS p JOIN patientphonenumber WHERE p.SSN =patientSSN AND p.SSN=%s",
+            (PatientSSN,))
+        contactinfo = mycursor.fetchall()
+        # Medical History
+        mycursor.execute(
+             "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
+        Medicalinfo = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'personalinfo': personalinfo,
+            'basicinfo': basicinfo,
+            'contactinfo': contactinfo,
+            'Medicalinfo':Medicalinfo,
+
+        }
+        return render_template('View_patient_labtech.html', data=data)
+@app.route('/View_patient', methods=['POST', 'GET'])
+def View_patient():
+    if request.method == 'GET':
+        # Personal info
+        mycursor.execute(
+            "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Insurance  FROM patient")
+        personalinfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute(
+            "select SSN,First_Name,Last_Name,Username,patient.Email,Password from patient join user where SSN=User_SSN")
+        basicinfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute(
+            "select SSN,First_Name,Last_Name,Address,PhoneNumber from patient join patientphonenumber where SSN=PatientSSN")
+        contactinfo = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'personalinfo': personalinfo,
+            'basicinfo': basicinfo,
+            'contactinfo': contactinfo,
+
+        }
+        return render_template('View_patient.html', data=data)
+    else:
+        PatientSSN = request.form['PatientSSN']
+        # Personal info
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name, p.Middle_Name, p.Last_Name, p.SEX, p.Birthdate, p.Insurance FROM patient As p where p.SSN=%s",
+            (PatientSSN,))
+        personalinfo = mycursor.fetchall()
+        # Basic Info Button
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name,p.Last_Name,Username,Password, user.Email FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
+            (PatientSSN,))
+        basicinfo = mycursor.fetchall()
+        # Contact Info Button
+        mycursor.execute(
+            "SELECT p.SSN, p.First_Name,p.Last_Name,p.Address,PhoneNumber FROM patient AS p JOIN patientphonenumber WHERE p.SSN =patientSSN AND p.SSN=%s",
+            (PatientSSN,))
+        contactinfo = mycursor.fetchall()
+        # Medical History
+        mycursor.execute(
+             "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
+        Medicalinfo = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'personalinfo': personalinfo,
+            'basicinfo': basicinfo,
+            'contactinfo': contactinfo,
+            'Medicalinfo':Medicalinfo,
+
+        }
+        return render_template('View_patient.html', data=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
