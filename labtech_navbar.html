@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <!--
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+    -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+
+
+<style>
+
+    :root {
+        --offcanvas-width: 270px;
+        --topNavbarHeight:56px;
+        --themecolour:#4eb0bd;
+        --hovertheme:#4abec9;
+        --texttheme:rgb(246, 246, 246);
+    }
+    
+    .btn-transparent .nav-link.link-danger  {
+        color: rgb(255, 175, 175);
+    }
+
+    .sidebar-nav {
+        width:var(--offcanvas-width);
+    }
+
+    .link-light {
+        color: var(--texttheme);
+    }
+
+    .nav-link.dropdown-toggle{
+        color:var(--texttheme)
+    }
+
+    .navbar-toggler-icon{
+        color:var(--texttheme)
+    }
+
+    .navbar-dark .navbar-brand:hover , .navbar-dark .navbar-brand:active, .navbar-dark .navbar-brand ,.navbar-dark .navbar-brand:focus{
+        color: var(--texttheme);
+    }
+
+    .navbar-customclass {
+    background-color: var(--themecolour);
+    }
+    
+    .btn-transparent{
+        background-color: var(--themecolour)
+    }
+
+    .btn-transparent:hover{
+        background-color: var(--hovertheme);
+    }
+
+    .btn-transparent:active,.btn-transparent:focus{
+        background-color: var(--themecolour);
+
+    }
+
+    .navbar {
+    -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
+box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
+    }
+
+
+    @media (min-width:992px) {
+        body{
+            overflow: auto !important;
+        }
+        .offcanvas-backdrop::before{
+            display: none;
+        }
+
+        .sidebar-nav {
+            transform: none;
+            visibility: visible !important;
+            top: var(--topNavbarHeight);
+            height: calc(100% - var(--topNavbarHeight));
+        }
+        .containerbody{
+            margin-left: var(--offcanvas-width);
+        }
+    }
+</style>
+
+
+    <title>labtech navbar (inheritance only) </title>
+</head>
+
+<body>
+    
+
+<!-- NAVBAR -->
+    
+<nav class="navbar navbar-expand-lg navbar-dark navbar-customclass fixed-top">
+    <div class="container-fluid">
+        <!-- OFFCANVAS TRIGGER-->
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample">
+            <span class="navbar-toggler-icon" data-bs-target="#offcanvasExample" ></span>
+        </button>
+        <!-- OFFCANVAS TRIGGER-->
+
+        <a class="navbar-brand fw-bold me-auto ms-4" href="#">Hospital HCIS Lab Tech</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon "></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+            
+            <ul class="d-flex ms-auto navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill"
+                            viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        </svg>
+                        <span class="align-text-top">{{session.get("USERNAME",None)}}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Account Settings</a></li>
+                        <li><a class="dropdown-item" href="/ContactUs">Contact Us</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- OFFCANVAS -->
+
+
+<div class="offcanvas offcanvas-start sidebar-nav navbar-customclass"  tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-body p-6 my-3">
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="http://127.0.0.1:5000/View_report_labtech" class="nav-item nav-link link-light bold text-start">
+        <span class="p-2 ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-medical"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M8 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L9 6l.549.317a.5.5 0 1 1-.5.866L8.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L7 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 8 4zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                <path
+                    d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                <path
+                    d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+            </svg>
+        </span>
+        My Reports
+        </a>
+    </button>
+
+    
+
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="http://127.0.0.1:5000/View_patient_labtech" class="nav-item nav-link link-light bold text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                </svg>
+            </span>
+            My Patients
+        </a>
+    </button>
+
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="#" class="nav-item nav-link link-light bold text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-droplet"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
+                    <path fill-rule="evenodd"
+                        d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z" />
+                </svg>
+            </span>
+            Reports & Tests
+        </a>
+    </button>
+
+    
+
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="#" class="nav-item nav-link link-light bold text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z" />
+                </svg>
+            </span>
+            Equipment
+        </a>
+    </button>
+
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="#" class="nav-item nav-link link-light bold text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-week"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                    <path
+                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                </svg>
+            </span>
+            Work Schedule
+        </a>
+    </button>
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="#" class="nav-item nav-link link-light bold text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill"
+                    viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                </svg>
+            </span>
+            Account Settings
+        </a>
+    </button>
+    <button type="button" class="btn btn-transparent " style="width: 100%;">
+        <a href="/Logout" class="nav-item nav-link link-danger text-start">
+            <span class="p-2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                    <path fill-rule="evenodd"
+                        d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
+                </svg>
+            </span>
+            Logout
+        </a>
+    </button>
+
+    </div>
+</div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script> -->
+    <script src="/static/js/bootstrap.bundle.js"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+<div class="containerbody">
+    
+    {% block content %}
+
+
+    {% endblock %}
+
+    <footer style="background-color: #4eb0bd;">
+        <!-- Remove the container if you want to extend the Footer to full width. -->
+        <!-- Grid container -->
+        <!-- <div class="container p-4 pb-0"> -->
+            <div class="row mt-5">
+                <div class="col-sm-6 col-md-12 mb-4">
+                  <div class="row mt-4">
+            
+          <!-- Section: Social media -->
+          <!-- <section class="mb-4"> -->
+            <!-- Facebook -->
+       
+            
+          <!-- </section> -->
+          <!-- Section: Social media -->
+        
+        <!-- Grid container -->
+      
+        <!-- Copyright -->
+        <div class="container my-auto">
+            <div class="copyright text-light text-center my-auto">
+                <span>Copyright &copy; SBE 2022</span>
+            </div>
+        </div>
+    
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Copyright -->
+      </footer>
+
+    
+</div>
+
+</body>
+
+</html>
