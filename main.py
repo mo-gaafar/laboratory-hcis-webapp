@@ -1,6 +1,6 @@
 # main.py
 import mysql.connector
-from flask import Flask, redirect, url_for, request, render_template, session
+from flask import Flask, redirect, url_for, request, render_template, session, make_response
 
 from datetime import datetime
 now = datetime.now()
@@ -755,7 +755,8 @@ def Add_report_labtech():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=ReportID + " has been successfully added to the database")
+            #return render_template('/Home', message=ReportID + " has been successfully added to the database")
+            return render_template('Home_labtech.html', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_report_labtech.html', error="Invalid input!")
 
@@ -900,7 +901,7 @@ def Add_consumables():
     else:
         return render_template('Add_consumables.html')
     
-    @app.route('/viewequipment', methods=['POST', 'GET'])
+@app.route('/viewequipment', methods=['POST', 'GET'])
 def viewequipment():
      if request.method == 'GET':
         # Personal info
@@ -964,7 +965,7 @@ def viewequipment():
     
     
     
-    @app.route('/viewconsumables', methods=['POST', 'GET'])
+@app.route('/viewconsumables', methods=['POST', 'GET'])
 def viewconsumables():
      if request.method == 'GET':
         # Personal info
@@ -1260,6 +1261,8 @@ def View_employee():
 def ContactUs():
     if request.method == 'GET':
         return render_template("ContactUs.html")
+    else:
+        return redirect('/Home')
 
 
 @app.route('/Add_test', methods=['POST', 'GET'])
@@ -1270,18 +1273,16 @@ def Add_test():
         Test_Name = request.form['Test_Name']
         Category = request.form['Category']
         Value = request.form['Value']
-        Start_Date = request.form['Start_Date']
-        End_Date = request.form['End_Date']
         Reference_Range = request.form['Reference_Range']
         Cost = request.form['Cost']
         Patient_SSN = request.form['Patient_SSN']
         Report_ID = request.form['Report_ID']
         Lab_No = request.form['Lab_No']
-        # TODO: ADMIN DOES NOT ADD TEST YET (ADD INPUT TO ADMIN?? OR KEEP IT NULL)
+
         LabtechSSN = session.get("USERSSN", None)
         try:
-            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (Test_ID, Test_Name, Category, Value, Start_Date, End_Date,
+            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (Test_ID, Test_Name, Category, Value,
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             # TODO: ADD TO CONDUCTS RELATIONSHIP (testid and labtech id) using session cookies note:remember quotations in ssn
@@ -1292,7 +1293,7 @@ def Add_test():
 
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            return render_template('Home_labtech.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
             return render_template('Add_test.html', error="Invalid input!")
 
@@ -1420,7 +1421,7 @@ def View_patient_labtech():
         personalinfo = mycursor.fetchall()
         # Basic Info Button
         mycursor.execute(
-            "select SSN,First_Name,Last_Name,Username,patient.Email,Password from patient join user where SSN=User_SSN")
+            "select SSN,First_Name,Last_Name,Username,Password, patient.Email from patient join user where SSN=User_SSN")
         basicinfo = mycursor.fetchall()
         # Contact Info Button
         mycursor.execute(
