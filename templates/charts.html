@@ -21,6 +21,11 @@
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <script type="text/javascript">
+        var data = {{ data|tojson }};
+    </script>
+    
+
 </head>
 {%extends navbarhtml %}
 {%block content%}
