@@ -42,28 +42,6 @@ def injectnavbarhtml():
 def Index():
     return render_template('index.html')
 
-
-@app.route('/charts', methods=['POST', 'GET'])
-def charts():
-    if request.method == 'GET':
-        mycursor.execute("select count(SSN) from employee")
-        countemployee = mycursor.fetchall()
-
-        mycursor.execute("select count(SSN) from lab_technician")
-        countlabtech = mycursor.fetchall()
-
-        mycursor.execute("select count(SSN) from patient")
-        countpatient = mycursor.fetchall()
-
-        data = {
-            'message': "data retrieved",
-            'countemployee': countemployee,
-            'countlabtech': countlabtech,
-            'countpatient':countpatient
-        }
-        return render_template('charts.html', data = data)
-
-
 @app.route('/Forgotpassword', methods=['POST', 'GET'])
 def Forgotpassword():
     if request.method == 'POST':
@@ -78,19 +56,19 @@ def Forgotpassword():
 @app.route('/Newpassword', methods=['POST', 'GET'])
 def Newpassword():
     if request.method == 'POST':
-        Email_check = request.cookies.get('Email_check')
-        newPass = request.form['newPass']
+        Email_check = request.cookies.get('Email_check')       
+        newPass = request.form['newPass']  
         newPass2 = request.form['newPass2']
         if newPass == newPass2:
             sql = "UPDATE user SET Password=%s WHERE user.Email=%s"
-            val = (newPass, Email_check)
+            val = (newPass,Email_check)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('login.html', message='Your password has been reset succesfully')
+            return render_template('login.html', message= 'Your password has been reset succesfully')
         else:
-            return render_template('NewPassword.html', error="Error! Passwords Do Not Match!")
+            return render_template('NewPassword.html', error="Error! Passwords Do Not Match!" )
     else:
-        # print(request.cookies.get('Email_check'))
+        #print(request.cookies.get('Email_check'))
         return render_template('Newpassword.html')
 
 
@@ -98,6 +76,20 @@ def Newpassword():
 def Home():
     # TODO: PASS USER INFORMATION THROUGH THIS ROUTE
     if request.method == 'GET':
+
+        # patient
+        # lab tech
+        # admin and HR(employee)
+
+        # TODO: fix this in frontend and HOME route
+        # if permission == ('admin',):
+        #     return render_template('admin_home.html', message="Welcome " + username, username=username)
+        # if permission == ('employee',):
+        #     return render_template('employee_home.html', message="Welcome " + username, username=username)
+        # if permission == ('labtechnician',):
+        #     return render_template('labtech_home.html', message="Welcome " + username, username=username)
+        # if permission == ('patient',):
+        #     return render_template('patient_home.html', message="Welcome " + username, username=username)
 
         permission = session.get("PERMISSION", None)
 
@@ -208,7 +200,8 @@ def Add_lab_tech_admin():
             mydb.commit()
             print('Labtech added by')
             # TODO: Fix redirecting in /home route so it can send message or error
-            return redirect('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+            # return redirect('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+            return render_template('Home_admin.html', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
         except:
             return render_template('Add_lab_tech_admin.html', error="Invalid input!")
     else:
@@ -232,25 +225,26 @@ def Add_lab_tech_emp():
         Address = request.form['Address']
         PhoneNumber = request.form['PhoneNumber']
         CV = request.form['CV']
-        try:
-            sql = "INSERT INTO Lab_Technician (SSN,First_Name,Middle_Name,Last_Name,SEX,Birthdate,Salary,Email,Address,Manager_SSN) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            val = (SSN, FirstName, MiddleName, LastName, Sex,
-                   formatted_date, Salary, EmailAddress, Address, ManagerSSN)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO LabTechPhoneNumber (LabTechSSN, PhoneNumber) VALUES (%s,%s)"
-            val = (SSN, PhoneNumber)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO LabTechQualifications (LabTechSSN, Qualifications) VALUES (%s,%s)"
-            val = (SSN, CV)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,LabTechSSN) VALUES (%s,%s,%s,%s,%s,%s)"
-            val = (SSN, Username, Password, "labtechnician", EmailAddress, SSN)
-            mycursor.execute(sql, val)
-            mydb.commit()
-            # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
-        except:
-            return render_template('Add_lab_tech_emp.html', error="Invalid input!")
+        #try:
+        sql = "INSERT INTO Lab_Technician (SSN,First_Name,Middle_Name,Last_Name,SEX,Birthdate,Salary,Email,Address,Manager_SSN) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        val = (SSN, FirstName, MiddleName, LastName, Sex,
+                formatted_date, Salary, EmailAddress, Address, ManagerSSN)
+        mycursor.execute(sql, val)
+        sql = "INSERT INTO LabTechPhoneNumber (LabTechSSN, PhoneNumber) VALUES (%s,%s)"
+        val = (SSN, PhoneNumber)
+        mycursor.execute(sql, val)
+        sql = "INSERT INTO LabTechQualifications (LabTechSSN, Qualifications) VALUES (%s,%s)"
+        val = (SSN, CV)
+        mycursor.execute(sql, val)
+        sql = "INSERT INTO User(User_SSN,Username,Password,Permission_Level,Email,LabTechSSN) VALUES (%s,%s,%s,%s,%s,%s)"
+        val = (SSN, Username, Password, "labtechnician", EmailAddress, SSN)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        # TODO: Fix redirecting in /home route so it can send message or error
+        # return render_template('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+        return render_template('employee_home.html', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
+        #except:
+            #return render_template('Add_lab_tech_emp.html', error="Invalid input!")
     else:
         return render_template('Add_lab_tech_emp.html')
 
@@ -286,7 +280,8 @@ def Add_patient_admin():
             val = (SSN, MedicalHistory)
             mycursor.execute(sql, val)
             mydb.commit()
-            return render_template('/Home', message=FirstName + LastName+" has been successfully added to the database")
+            return render_template('Home_admin.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
+            #return render_template('/Home', message=FirstName + LastName+" has been successfully added to the database")
         except:
             return render_template('Add_patient_admin.html', error="Invalid input!")
 
@@ -480,7 +475,7 @@ def View_labtech_employee():
         mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician AS L JOIN employee AS E WHERE  L.Manager_SSN= E.SSN AND L.SSN=%s", (LabtechSSN,))
         Manager = mycursor.fetchall()
         # Dependents Table
-        mycursor.execute("SELECT SSN, Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s", (LabtechSSN,))
+        mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s", (LabtechSSN,))
         Dependents = mycursor.fetchall()
 
         data = {
@@ -566,7 +561,7 @@ def View_employee_emp():
         contactinfo = mycursor.fetchall()
         # Supervisor Table
         mycursor.execute(
-            "SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN ")
+            "SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN ")
         superinfo = mycursor.fetchall()
 
         data = {
@@ -594,7 +589,7 @@ def View_employee_emp():
         mycursor.execute("SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
         superinfo = mycursor.fetchall()
         # Dependents Table
-        mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM employee AS E JOIN dependents_employee AS D WHERE E.SSN = D.ESSN AND D.ESSN=%s", (EmployeeSSN,))
+        mycursor.execute("SELECT Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, Relationship FROM employee AS E JOIN dependents_employee AS D WHERE E.SSN = D.ESSN AND D.ESSN=%s", (EmployeeSSN,))
         depinfo = mycursor.fetchall()
         # Supervised Table
         mycursor.execute(
@@ -623,22 +618,27 @@ def View_employee_admin():
     if request.method == 'GET':
         # Personal info
         mycursor.execute(
-            "SELECT ID, SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Supervisor_SSN FROM employee")
+            "SELECT ID, SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Supervisor_SSN FROM employee")
         personalinfo = mycursor.fetchall()
         # Contact Info Button
         mycursor.execute(
-            "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber, Email FROM employee JOIN employeephonenumber WHERE SSN = EmployeeSSN  ")
+            "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM employee JOIN employeephonenumber WHERE SSN = EmployeeSSN  ")
         contactinfo = mycursor.fetchall()
+        # Basic Information 
+        mycursor.execute(
+            "SELECT SSN,First_Name,	Last_Name,Username,Password, E.Email FROM employee AS E JOIN user WHERE E.SSN = User_SSN")
+        basicinfo = mycursor.fetchall()
         # Supervisor Table
         mycursor.execute(
-            "SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN ")
+            "SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary  FROM employee AS E JOIN employee AS S ON E.Supervisor_SSN = S.SSN")
         superinfo = mycursor.fetchall()
 
         data = {
             'message': "data retrieved",
             'personalinfo': personalinfo,
             'contactinfo': contactinfo,
-            'superinfo': superinfo
+            'superinfo': superinfo,
+            'basicinfo' : basicinfo
         }
         return render_template('View_employee_admin.html', data=data)
     else:
@@ -653,7 +653,7 @@ def View_employee_admin():
         basicinfo = mycursor.fetchall()
         # Contact Info Button
         mycursor.execute(
-            "SELECT E.SSN, E.First_Name,E.Last_Name,E.Address,PhoneNumber, E.Email FROM employee AS E JOIN employeephonenumber WHERE E.SSN = EmployeeSSN AND E.SSN=%s", (EmployeeSSN,))
+            "SELECT E.SSN, E.First_Name,E.Last_Name,E.Address,PhoneNumber FROM employee AS E JOIN employeephonenumber WHERE E.SSN = EmployeeSSN AND E.SSN=%s", (EmployeeSSN,))
         contactinfo = mycursor.fetchall()
         # Supervisor Table
         mycursor.execute("SELECT S.ID,S.SSN,S.First_Name,S.Middle_Name,S.Last_Name,S.SEX, S.Birthdate,S.Salary FROM employee AS E JOIN employee AS S WHERE E.Supervisor_SSN = S.SSN AND E.SSN=%s", (EmployeeSSN,))
@@ -716,7 +716,7 @@ def Add_lab_tech():
             mycursor.execute(sql, val)
             mydb.commit()
             return render_template('/Home', message=FirstName + ' ' + LastName + " has been succesfuly added to lab technicians.")
-            # TODO: redirect('/Home') +messsages or errors
+            #TODO: redirect('/Home') +messsages or errors
         except:
             return render_template('Add_lab_tech.html', error="Invalid input!")
     else:
@@ -739,7 +739,8 @@ def Add_Report():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=ReportID + " has been successfully added to the database")
+            # return render_template('/Home', message=ReportID + " has been successfully added to the database")
+            return render_template('Home_admin.html', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_Report.html', error="Invalid input!")
 
@@ -763,8 +764,7 @@ def Add_report_labtech():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            #return render_template('/Home', message=ReportID + " has been successfully added to the database")
-            return render_template('Home_labtech.html', message=ReportID + " has been successfully added to the database")
+            return render_template('/Home', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_report_labtech.html', error="Invalid input!")
 
@@ -872,19 +872,18 @@ def Add_new_equipment():
         IPMMaintenance = request.form['IPMMaintenance']
         Test_Name = request.form['Test_Name']
         Test_Type = request.form['Test_Type']
-
-        # try:
-        sql = "INSERT INTO equipment (Serial_Number,Inventory_ID,Department,Device_Name,Test_Name,Test_Type,Status,IPMMaintenance,Manufacturer_ID,Model,ManufacturerName,ManufacturingDate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        val = (Serial_Number, Inventory_ID, Department, Device_Name, Test_Name, Test_Type,
-               Status, IPMMaintenance, Manufacturer_ID, Model, ManufacturerName, ManufacturingDate)
-        mycursor.execute(sql, val)
-        mydb.commit()
-        return render_template('Add_new_equipment.html', message=Device_Name + " has been succesfuly added to new equipment.")
-        # except:
-        # return render_template('Add_new_equipment.html', error="Invalid input!")
+       
+        
+        try:
+            sql = "INSERT INTO equipment (Serial_Number,Inventory_ID,Department,Device_Name,Test_Name,Test_Type,Status,IPMMaintenance,Manufacturer_ID,Model,ManufacturerName,ManufacturingDate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            val= (Serial_Number,Inventory_ID,Department,Device_Name,Test_Name,Test_Type,Status,IPMMaintenance,Manufacturer_ID,Model,ManufacturerName,ManufacturingDate)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return render_template('Home_admin.html', message=Device_Name  + " has been succesfuly added to new equipment.")
+        except:
+            return render_template('Add_new_equipment.html', error="Invalid input!")
     else:
         return render_template('Add_new_equipment.html')
-
 
 @app.route('/Add_consumables', methods=['POST', 'GET'])
 def Add_consumables():
@@ -894,47 +893,40 @@ def Add_consumables():
         InventoryID = request.form['InventoryID']
         SupplierContact = request.form['SupplierContact']
         EquipSSN = request.form['EquipSSN']
-
+       
         try:
             sql = "INSERT INTO consumables (Name,Stock,InventoryID,SupplierContact) VALUES(%s,%s,%s,%s)"
-            val = (Name, Stock, InventoryID, SupplierContact)
+            val = (Name, Stock,InventoryID,SupplierContact)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO uses (Consumables_Name,EquipmentSerialNUmber) VALUES(%s,%s)"
+            val = (Name,EquipSSN)
             mycursor.execute(sql, val)
             mydb.commit()
-            sql = "INSERT INTO uses (Consumables_Name,EquipmentSerialNUmber) VALUES(%s,%s)"
-            val = (Name, EquipSSN)
-            mycursor.execute(sql, val)
-            return render_template('Add_consumables.html', message=Name + " has been successfully added to the consumables table.")
+            return render_template('Home_admin.html', message=  Name + " has been successfully added to the consumables table.")
         except:
             return render_template('Add_consumables.html', error="Invalid input!")
 
     else:
         return render_template('Add_consumables.html')
-<<<<<<< HEAD
-
-
-=======
     
->>>>>>> 4e6a46cfebe7fe9e80b43b7d0f9154e03762bd09
 @app.route('/viewequipment', methods=['POST', 'GET'])
 def viewequipment():
-    if request.method == 'GET':
+     if request.method == 'GET':
         # Personal info
-        mycursor.execute(
-            "SELECT Serial_Number, Device_Name,Model FROM equipment")
+        mycursor.execute("SELECT Serial_Number, Device_Name,Model FROM equipment")
         DeviceInformation = mycursor.fetchall()
         # Basic Info Button
-        mycursor.execute(
-            "SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment")
+        mycursor.execute("SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment")
         ManufacturerInformation = mycursor.fetchall()
         # Contact Info Button
-        mycursor.execute(
-            "SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment")
+        mycursor.execute("SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment")
         InstitutionalInformation = mycursor.fetchall()
         # Supervisor Table
         mycursor.execute("SELECT Test_Name, Test_Type FROM equipment")
         TestInformation = mycursor.fetchall()
         mycursor.execute("SELECT Device_Name, Serial_Number FROM equipment")
         EquipmentList = mycursor.fetchall()
+       
 
         data = {
             'message': "data retrieved",
@@ -943,32 +935,29 @@ def viewequipment():
             'InstitutionalInformation': InstitutionalInformation,
             'TestInformation': TestInformation,
             'EquipmentList': EquipmentList
-        }
-
+            }
+        
         return render_template('viewequipment.html', data=data)
-    else:
+     else:
         Serial_Number = request.form['Serial_Number']
         # Personal info
-        mycursor.execute(
-            "SELECT Serial_Number, Device_Name,Model FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        mycursor.execute("SELECT Serial_Number, Device_Name,Model FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
         DeviceInformation = mycursor.fetchall()
         # Basic Info Button
-        mycursor.execute(
-            "SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        mycursor.execute("SELECT ManufacturerName, Manufacturer_ID,ManufacturingDate FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
         ManufacturerInformation = mycursor.fetchall()
         # Contact Info Button
-        mycursor.execute(
-            "SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        mycursor.execute("SELECT Department, Inventory_ID,Status,IPMMaintenance FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
         InstitutionalInformation = mycursor.fetchall()
         # Supervisor Table
-        mycursor.execute(
-            "SELECT Test_Name, Test_Type FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        mycursor.execute("SELECT Test_Name, Test_Type FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
         TestInformation = mycursor.fetchall()
         # Dependents Table
-        mycursor.execute(
-            "SELECT Device_Name, Serial_Number FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
+        mycursor.execute("SELECT Device_Name, Serial_Number FROM equipment WHERE Serial_Number=%s", (Serial_Number,))
         EquipmentList = mycursor.fetchall()
         # Supervised Table
+       
+
 
         data = {
             'message': "data retrieved",
@@ -979,47 +968,39 @@ def viewequipment():
             'EquipmentList': EquipmentList
         }
         return render_template('viewequipment.html', data=data)
-<<<<<<< HEAD
-
-
-=======
     
     
     
->>>>>>> 4e6a46cfebe7fe9e80b43b7d0f9154e03762bd09
 @app.route('/viewconsumables', methods=['POST', 'GET'])
 def viewconsumables():
-    if request.method == 'GET':
+     if request.method == 'GET':
         # Personal info
-        mycursor.execute(
-            "SELECT Name, Stock,SupplierContact,InventoryID FROM consumables")
+        mycursor.execute("SELECT C.Name, Stock, SupplierContact, InventoryID FROM consumables AS C JOIN uses ON C.Name = Consumables_Name JOIN equipment ON EquipmentSerialNumber = Serial_Number")
         ConsumableInformation = mycursor.fetchall()
-
-        # Basic Info Button
 
         data = {
             'message': "data retrieved",
             'ConsumableInformation': ConsumableInformation
-        }
-
+            }
+        
         return render_template('viewconsumables.html', data=data)
-    else:
+     else:
         InventoryID = request.form['InventoryID']
         # Personal info
-        mycursor.execute(
-            "SELECT Name, Stock,SupplierContact,InventoryID FROM consumables WHERE InventoryID=%s", (InventoryID,))
+        mycursor.execute("SELECT C.Name, Stock, SupplierContact, InventoryID FROM consumables AS C JOIN uses ON C.Name = Consumables_Name JOIN equipment ON EquipmentSerialNumber = Serial_Number WHERE InventoryID=%s", (InventoryID,))
         ConsumableInformation = mycursor.fetchall()
+    
 
         data = {
             'message': "data retrieved",
             'ConsumableInformation': ConsumableInformation
         }
         return render_template('viewconsumables.html', data=data)
-
 
 @app.route('/Edit_equipment', methods=['POST', 'GET'])
 def Edit_equipment():
     return render_template('Edit_equipment.html')
+
 
 
 @app.route('/Add_employee', methods=['POST', 'GET'])
@@ -1063,7 +1044,7 @@ def Add_employee():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database")
+            return render_template('Home_admin.html', message=FirstName + ' ' + LastName + " has been successfully added to the database")
         except:
             return render_template('Add_employee.html', error="Invalid input!")
     else:
@@ -1146,7 +1127,8 @@ def Add_labtech_dependents():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database")
+            #return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database")
+            return render_template('/Home_admin.html', message=FirstName + ' ' + LastName + " has been successfully added to the database")
         except:
             return render_template('Add_labtech_dependents.html', error="Invalid input!")
 
@@ -1174,7 +1156,7 @@ def Add_labtech_dependents_emp():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to the database.")
+            return render_template('employee_home.html', message=FirstName + ' ' + LastName + " has been successfully added to the database.")
         except:
 
             return render_template('Add_labtech_dependents_emp.html', error="Invalid input!")
@@ -1199,13 +1181,13 @@ def Add_empdependents():
         try:
             sql = "INSERT INTO dependents_employee(Dependent_SSN, First_Name, Middle_Name, Last_Name, Birthdate, SEX, Address, Relationship, ESSN ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (SSN, FirstName, MiddleName, LastName, Birthdate,
-                   Gender, Relationship, Address, EmployeeSSN)
+                   Gender, Address, Relationship, EmployeeSSN)
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+"dependents.")
+            return render_template('Home_admin.html', message=FirstName + ' ' + LastName + " has been successfully added to Employee "+EmployeeSSN+" dependents.")
         except:
-            return render_template('Add_empdependents', error="Invalid input!")
+            return render_template('Add_empdependents.html', error="Invalid input!")
 
     else:
         return render_template('Add_empdependents.html')
@@ -1283,8 +1265,6 @@ def View_employee():
 def ContactUs():
     if request.method == 'GET':
         return render_template("ContactUs.html")
-    else:
-        return redirect('/Home')
 
 
 @app.route('/Add_test', methods=['POST', 'GET'])
@@ -1295,16 +1275,18 @@ def Add_test():
         Test_Name = request.form['Test_Name']
         Category = request.form['Category']
         Value = request.form['Value']
+        Start_Date = request.form['Start_Date']
+        End_Date = request.form['End_Date']
         Reference_Range = request.form['Reference_Range']
         Cost = request.form['Cost']
         Patient_SSN = request.form['Patient_SSN']
         Report_ID = request.form['Report_ID']
         Lab_No = request.form['Lab_No']
-
+        # TODO: ADMIN DOES NOT ADD TEST YET (ADD INPUT TO ADMIN?? OR KEEP IT NULL)
         LabtechSSN = session.get("USERSSN", None)
         try:
-            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (Test_ID, Test_Name, Category, Value,
+            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (Test_ID, Test_Name, Category, Value, Start_Date, End_Date,
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             # TODO: ADD TO CONDUCTS RELATIONSHIP (testid and labtech id) using session cookies note:remember quotations in ssn
@@ -1315,7 +1297,7 @@ def Add_test():
 
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('Home_labtech.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
             return render_template('Add_test.html', error="Invalid input!")
 
@@ -1331,85 +1313,88 @@ def Add_test_admin():
         Test_Name = request.form['Test_Name']
         Category = request.form['Category']
         Value = request.form['Value']
-        Start_Date = request.form['Start_Date']
-        End_Date = request.form['End_Date']
         Reference_Range = request.form['Reference_Range']
         Cost = request.form['Cost']
         Patient_SSN = request.form['Patient_SSN']
         Report_ID = request.form['Report_ID']
         Lab_No = request.form['Lab_No']
+        LabtechSSN = request.form['LabtechSSN']
         try:
-            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (Test_ID, Test_Name, Category, Value, Start_Date, End_Date,
-                   Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
+            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (Test_ID, Test_Name, Category, Value,
+                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO conducts(TestID,LabTechSSn) VALUES(%s, %s)"
+            val = (Test_ID, LabtechSSN)
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            # return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            return render_template('Home_admin.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
-            return render_template('Add_test_admin.html', error="Invalid input!")
+           return render_template('Add_test_admin.html', error="Invalid input!")
 
     else:
         return render_template('Add_test_admin.html')
 
 
-@app.route('/View_lab_tech', methods=['POST', 'GET'])
-def View_lab_tech():
-    if request.method == 'GET':
-        # Personal info
-        mycursor.execute(
-            "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician")
-        PersonalInfo = mycursor.fetchall()
-        # Basic Info Button
-        mycursor.execute(
-            "SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN ")
-        BasicInfo = mycursor.fetchall()
-        # Contact Info Button
-        mycursor.execute(
-            "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN  ")
-        ContactInfo = mycursor.fetchall()
-        # # Manager Table
-        # mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician JOIN employee AS E WHERE  Manager_SSN= E.SSN ")
-        # Manager = mycursor.fetchall()
+# @app.route('/View_lab_tech', methods=['POST', 'GET'])
+# def View_lab_tech():
+#     if request.method == 'GET':
+#         # Personal info
+#         mycursor.execute(
+#             "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician")
+#         PersonalInfo = mycursor.fetchall()
+#         # Basic Info Button
+#         mycursor.execute(
+#             "SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN ")
+#         BasicInfo = mycursor.fetchall()
+#         # Contact Info Button
+#         mycursor.execute(
+#             "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN  ")
+#         ContactInfo = mycursor.fetchall()
+#         # # Manager Table
+#         # mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician JOIN employee AS E WHERE  Manager_SSN= E.SSN ")
+#         # Manager = mycursor.fetchall()
 
-        data = {
-            'message': "data retrieved",
-            'PersonalInfo': PersonalInfo,
-            'BasicInfo': BasicInfo,
-            'ContactInfo': ContactInfo,
-            # 'Manager': Manager
-        }
-        return render_template('View_lab_tech.html', data=data)
-    else:
-        LabtechSSN = request.form['LabtechSSN']
-        # Personal info
-        mycursor.execute(
-            "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician WHERE SSN=%s", (LabtechSSN,))
-        PersonalInfo = mycursor.fetchall()
-        # Basic Info Button
-        mycursor.execute(
-            "SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN  AND SSN=%s", (LabtechSSN,))
-        BasicInfo = mycursor.fetchall()
-        # Contact Info Button
-        mycursor.execute(
-            "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN AND SSN=%s", (LabtechSSN,))
-        ContactInfo = mycursor.fetchall()
-        # Manager Table
-        mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician AS L JOIN employee AS E WHERE  L.Manager_SSN= E.SSN AND L.SSN=%s", (LabtechSSN,))
-        Manager = mycursor.fetchall()
-        # Dependents Table
-        mycursor.execute("SELECT SSN, Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s", (LabtechSSN,))
-        Dependents = mycursor.fetchall()
+#         data = {
+#             'message': "data retrieved",
+#             'PersonalInfo': PersonalInfo,
+#             'BasicInfo': BasicInfo,
+#             'ContactInfo': ContactInfo,
+#             # 'Manager': Manager
+#         }
+#         return render_template('View_lab_tech.html', data=data)
+#     else:
+#         LabtechSSN = request.form['LabtechSSN']
+#         # Personal info
+#         mycursor.execute(
+#             "SELECT SSN, First_Name, Middle_Name, Last_Name, SEX, Birthdate, Salary, Manager_SSN FROM lab_technician WHERE SSN=%s", (LabtechSSN,))
+#         PersonalInfo = mycursor.fetchall()
+#         # Basic Info Button
+#         mycursor.execute(
+#             "SELECT SSN, First_Name,Last_Name,Username,Password, user.Email FROM lab_technician JOIN user WHERE SSN = LabTechSSN  AND SSN=%s", (LabtechSSN,))
+#         BasicInfo = mycursor.fetchall()
+#         # Contact Info Button
+#         mycursor.execute(
+#             "SELECT SSN, First_Name,Last_Name,Address,PhoneNumber FROM lab_technician JOIN LabTechPhoneNumber WHERE SSN = LabTechSSN AND SSN=%s", (LabtechSSN,))
+#         ContactInfo = mycursor.fetchall()
+#         # Manager Table
+#         mycursor.execute("SELECT E.ID,E.SSN,E.First_Name,E.Middle_Name,E.Last_Name,E.SEX, E.Birthdate,E.Salary FROM lab_technician AS L JOIN employee AS E WHERE  L.Manager_SSN= E.SSN AND L.SSN=%s", (LabtechSSN,))
+#         Manager = mycursor.fetchall()
+#         # Dependents Table
+#         mycursor.execute("SELECT SSN, Dependent_SSN, D.First_Name, D.Middle_Name, D.Last_Name, D.SEX, D.Birthdate, D.Address, Relationship FROM lab_technician JOIN Dependents_LabTech AS D WHERE SSN = D.Lab_Tech_SSN AND D.Lab_Tech_SSN=%s", (LabtechSSN,))
+#         Dependents = mycursor.fetchall()
 
-        data = {
-            'message': "data retrieved",
-            'PersonalInfo': PersonalInfo,
-            'BasicInfo': BasicInfo,
-            'ContactInfo': ContactInfo,
-            'Manager': Manager,
-            'Dependents': Dependents,
-        }
-        return render_template('View_lab_tech.html', data=data)
+#         data = {
+#             'message': "data retrieved",
+#             'PersonalInfo': PersonalInfo,
+#             'BasicInfo': BasicInfo,
+#             'ContactInfo': ContactInfo,
+#             'Manager': Manager,
+#             'Dependents': Dependents,
+#         }
+#         return render_template('View_lab_tech.html', data=data)
 
 
 @app.route('/Add_lab', methods=['POST', 'GET'])
@@ -1425,7 +1410,8 @@ def Add_lab():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message="Lab " + labname + " has been successfully added to the labs table.")
+            # return render_template('/Home', message="Lab " + labname + " has been successfully added to the labs table.")
+            return render_template('Home_admin.html', message="Lab " + labname + " has been successfully added to the labs table.")
         except:
             return render_template('Add_lab.html', error="Invalid input!")
 
@@ -1443,7 +1429,7 @@ def View_patient_labtech():
         personalinfo = mycursor.fetchall()
         # Basic Info Button
         mycursor.execute(
-            "select SSN,First_Name,Last_Name,Username,Password, patient.Email from patient join user where SSN=User_SSN")
+            "select SSN,First_Name,Last_Name,Username,patient.Email,Password from patient join user where SSN=User_SSN")
         basicinfo = mycursor.fetchall()
         # Contact Info Button
         mycursor.execute(
@@ -1534,7 +1520,7 @@ def View_patient():
         contactinfo = mycursor.fetchall()
         # Medical History
         mycursor.execute(
-            "SELECT p.SSN, p.First_Name,p.Last_Name, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
+            "SELECT p.SSN, MedicalHistory FROM patient AS p JOIN patientmedicalhistory WHERE p.SSN =patientSSN AND p.SSN=%s", (PatientSSN,))
         Medicalinfo = mycursor.fetchall()
 
         data = {
