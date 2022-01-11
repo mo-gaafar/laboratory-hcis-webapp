@@ -53,6 +53,8 @@ def Forgotpassword():
     else:
         return render_template('Forgotpassword.html')
 
+@app.route('/Verification', methods)
+
 
 @app.route('/Newpassword', methods=['POST', 'GET'])
 def Newpassword():
