@@ -1268,6 +1268,58 @@ def View_employee():
         return render_template('View_employee.html', data=data)
 
 
+@app.route('/charts', methods=['POST', 'GET'])
+def charts():
+    if request.method == 'GET':
+        mycursor.execute("select count(SSN) from employee")
+        countemployee = mycursor.fetchall()
+
+        mycursor.execute("select count(SSN) from lab_technician")
+        countlabtech = mycursor.fetchall()
+
+        mycursor.execute("select count(SSN) from patient")
+        countpatient = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-01-01' and Publish_Date<'2021-02-01'")
+        jan = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-02-01' and Publish_Date<'2021-03-01'")
+        feb = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-03-01' and Publish_Date<'2021-04-01'")
+        march = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-04-01' and Publish_Date<'2021-05-01'")
+        april = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-05-01' and Publish_Date<'2021-06-01'")
+        may = mycursor.fetchall()
+
+        mycursor.execute(
+            "select count(ReportID) from report  where Publish_Date>='2021-06-01' and Publish_Date<'2021-07-01'")
+        june = mycursor.fetchall()
+
+        data = {
+            'message': "data retrieved",
+            'countemployee': countemployee,
+            'countlabtech': countlabtech,
+            'countpatient': countpatient,
+            'jan': jan,
+            'feb': feb,
+            'march': march,
+            'april': april,
+            'may': may,
+            'june': june
+        }
+        print(data['april'])
+        return render_template('charts.html', data=data)
+
+
 @app.route('/ContactUs', methods=['POST', 'GET'])
 def ContactUs():
     if request.method == 'GET':
