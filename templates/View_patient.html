@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" type="image/x-icon" href="/static/images/icon.jpg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Patients</title>
@@ -13,7 +12,7 @@
 
 <body>
   {%extends navbarhtml %}
-    {%block content%}
+  {%block content%}
   <div class="container mt-6-fluid">
     <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
     <h1>View Patients</h1>
@@ -67,11 +66,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 align-self-end">
 
-              <a href="http://127.0.0.1:5000/Add_patient_admin" class="btn btn-primary">Add Patient</a>
-
+            <div class="container mt-6-fluid">
+              <div class="gap mt-3">
+                <div class="row mt-3">
+                  <div class="col mt-3-12">
+                    <div class="col mt-12 bg-light text-right">
+                      <a href="http://127.0.0.1:5000/Add_patient_admin" class="btn btn-primary">Add Patient</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+
 
         </div>
       </div>
@@ -103,27 +111,27 @@
         <div class="collapse" id="PersonalInfo">
           <table class="table table-hover">
             <thead>
-                <tr>
-                    <th scope="col">SSN</th>
-                    <th scope="col"> First Name </th>
-                    <th scope="col"> Middle Name </th>
-                    <th scope="col"> Last Name </th>
-                    <th scope="col"> Sex </th>
-                    <th scope="col"> Birthdate </th>
-                    <th scope="col"> Insurance </th>
-                </tr>
+              <tr>
+                <th scope="col">SSN</th>
+                <th scope="col"> First Name </th>
+                <th scope="col"> Middle Name </th>
+                <th scope="col"> Last Name </th>
+                <th scope="col"> Sex </th>
+                <th scope="col"> Birthdate </th>
+                <th scope="col"> Insurance </th>
+              </tr>
             </thead>
             <tbody>
-            {% for r in data.personalinfo %}
-            <tr>
+              {% for r in data.personalinfo %}
+              <tr>
                 {% for l in r %}
                 <td>{{l}}</td>
                 {% endfor %}
-            </tr>
-            {% endfor %}
+              </tr>
+              {% endfor %}
 
             </tbody>
-        </table>
+          </table>
         </div>
 
         <div class="collapse" id="Contact-Info">
@@ -139,12 +147,12 @@
             </thead>
             <tbody>
               {% for r in data.contactinfo %}
-            <tr>
+              <tr>
                 {% for l in r %}
                 <td>{{l}}</td>
                 {% endfor %}
-            </tr>
-            {% endfor %}
+              </tr>
+              {% endfor %}
 
             </tbody>
           </table>
@@ -163,12 +171,12 @@
             </thead>
             <tbody>
               {% for r in data.basicinfo %}
-            <tr>
+              <tr>
                 {% for l in r %}
                 <td>{{l}}</td>
                 {% endfor %}
-            </tr>
-            {% endfor %}
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -211,19 +219,17 @@
             <thead>
               <tr>
                 <th scope="col"> SSN </th>
-                <th scope="col"> First Name </th>
-                <th scope="col"> Last Name </th>
                 <th scope="col"> Medical History </th>
               </tr>
             </thead>
             <tbody>
               {% for r in data.Medicalinfo %}
-            <tr>
+              <tr>
                 {% for l in r %}
                 <td>{{l}}</td>
                 {% endfor %}
-            </tr>
-            {% endfor %}
+              </tr>
+              {% endfor %}
 
             </tbody>
           </table>
@@ -236,7 +242,7 @@
   </div>
 
 
-    </form>
+  </form>
 
   <script src="/static/js/dropdown.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -246,7 +252,7 @@
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
 
-    {% endblock %}
+  {% endblock %}
 </body>
 
 </html>v

@@ -5,54 +5,72 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Consumables</title>
+    <title>Add Consumables</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="icon" type="image/x-icon" href="/static/images/icon.jpg">
 </head>
 
 <body>
+{%extends navbarhtml %}
+{%block content%}
     <div class="container">
-        <h1>View Equipment consumables</h1>
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+        <h1>Add Equipment Consumables</h1>
+        <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
     </div>
-
+ <form action="http://127.0.0.1:5000/Add_consumables" method="POST">
     <div class="container border">
         <div class="col-4 m-3">
             <label for="exampleFormControlInput1" class="form-label">Name</label>
-            <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+            <input name="Name" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
         </div>
         <div class="col-4 m-3">
             <label for="exampleFormControlInput1" class="form-label">Stock</label>
-            <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+            <input name="Stock" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+
+        </div>
+        <div class="col-4 m-3">
+            <label for="exampleFormControlInput1" class="form-label">Inventory ID</label>
+            <input name="InventoryID" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
         </div>
         <div class="col-4 m-3">
             <label for="exampleFormControlInput1" class="form-label">Supplier Contact</label>
-            <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+            <input name="SupplierContact" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
         </div>
         <div class="col-4 m-3">
-            <label for="exampleFormControlInput1" class="form-label">Used in (Equipment)</label>
-            <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+            <label for="exampleFormControlInput1" class="form-label">Equipment Serial Number</label>
+            <input name="EquipSSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
         </div>
+
         <div class="m-3">
-            <button type="button" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>
 
 
         </div>
 
 
     </div>
+</form>
 
+{%if message%}
+  <div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+{%endif%}
 
-
-
-
+{%if error%}
+  <div class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+{%endif%}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+{% endblock %}
 </body>
 
 </html>

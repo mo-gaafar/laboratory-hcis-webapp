@@ -2,7 +2,6 @@
 
 <html lang="en" dir="ltr">
    <head>
-      <link rel="icon" type="image/x-icon" href="/static/images/icon.jpg">
       <meta charset="utf-8">
       <title> Login   </title>
        <!---------------------------------------- Include the css file ---------------------------------------->
@@ -32,12 +31,6 @@
                <div class="field">
                   <input type="submit" value="LOGIN">
                </div>
-              
-               <div class="signup">
-                  Don't have account?
-                  <a href=" http://127.0.0.1:5000/signup">Signup Now</a>
-               </div>
-              
                <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
                {%if message%}
                <div class="alert alert-success" role="alert">
@@ -50,7 +43,10 @@
                  {{error}}
             </form>
 
-          
+            <div class="signup">
+               Don't have account?
+               <a href=" http://127.0.0.1:5000/signup">Signup Now</a>
+            </div>
          </div>
       </div>
 
