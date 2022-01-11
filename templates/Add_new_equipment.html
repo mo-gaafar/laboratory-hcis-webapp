@@ -6,158 +6,161 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Equipment</title>
-    <script type="text/javascript" src="/static/js/table_script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
-{%extends navbarhtml %}
-{%block content%}
     <div class="container">
-        <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
         <h1>Add New Equipment</h1>
-        <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6> 
     </div>
 
-    <form action="http://127.0.0.1:5000/Add_new_equipment" method="POST">
-   
-        <div class="container">
-        <div class="container ">
+    <div class="container">
+        <div class="container border">
             <h4>Device Information</h4>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Serial Number</label>
-                    <input name="Serial_Number" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
                 </div>
             </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Device Name</label>
-                    <input name="Device_Name" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="Xray">
                 </div>
             </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Device Model</label>
-                    <input name="Model" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="ABCX123">
                 </div>
             </div>
 
         </div>
-        <div class="container ">
+        <div class="container border">
             <h4>Maintenance Information</h4>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Manufacturer Name</label>
-                    <input name="ManufacturerName" type="string" class="form-control" id="exampleFormControlInput1"
-                        placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1"
+                        placeholder="Manufacturer X">
                 </div>
             </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Manufacturer ID</label>
-                    <input name="Manufacturer_ID" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
                 </div>
             </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Manufacturing Date</label>
-                    <input name="ManufacturingDate" type="string" class="form-control" id="exampleFormControlInput1" placeholder="YYYY/DD/MM">
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="DD/MM/YYYY">
                 </div>
             </div>
         </div>
-        <div class="container ">
+        <div class="container border">
             <h4>Institutional Information</h4>
-   
-                     <div class="m-3">
-                        <div class="col-4">
-                            <label for="exampleFormControlInput1" class="form-label">Department</label>
-                            <input name="Department" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
-                        </div>
-                    </div>
-        
+            <div class="col-4">
+                <div class="m-3">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                          Department
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" href="#">Dep1</a></li>
+                          <li><a class="dropdown-item" href="#">Dep2</a></li>
+                          <li><a class="dropdown-item" href="#">Dep3</a></li>
+                          <li><a class="dropdown-item" href="#">Dep4</a></li>
+                          <li><a class="dropdown-item" href="#">Dep5</a></li>
+                        </ul>
+                      </div>
+                </div>
                  
+              </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Inventory ID</label>
-                    <input name="Inventory_ID" type="string" class="form-control" id="exampleFormControlInput1">
+                    <input type="string" class="form-control" id="exampleFormControlInput1"
+                        placeholder="1234567890">
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="m-3">
-                    <label for="exampleFormControlInput1" class="form-label">Status</label> <br>
-                    <input type="radio" name="Status" value="Available" required>Available
-                    <input type="radio" name="Status" value="Busy" required>Busy<br>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                          Status
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" href="#">Available</a></li>
+                          <li><a class="dropdown-item" href="#">Occupied</a></li>
+                        </ul>
+                      </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="m-3">
+                <div class="col-4">
+                    <label for="exampleFormControlInput1" class="form-label">Orders</label>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="IDK?">
                 </div>
             </div>
-                                    
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">IPM Maintenance</label>
-                    <input name="IPMMaintenance" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="IDK?">
                 </div>
             </div>
         </div>
         <div class="container border">
             <h4>Tests Information</h4>
-            <div class="row mt-2 ">
-            <div class="col mt-4">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Type</th>
 
-            <div id="wrapper">
-                <table cellspacing=2 cellpadding=5 id="data_table" border=1>
-                <tr>
-                <th>Test Name</th>
-                <th>Test Type</th>
-                </tr>
-            
-                
-                
-                <tr>
-                <td><input name="Test_Name" type="string" id="Test_Name"></td>
-                <td><input name="Test_Type" type="string" id="Test_Type"></td>
-                <td><input type="button" class="add" onclick="add_row();" value="Add Row"></td>
-                </tr>
-                
-                </table>
-            </div>
-            </div>
-                </div>
-                
-            
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>ABC</td>
+                    <td>X</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>DEF</td>
+                    <td>Y</td>
+                  </tr>
+                </tbody>
+              </table>
 
         </div>
 
         <div class="m-3">
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-success">Submit</button>
         </div>
     </div>
-    </form>
 
-    
-    {%if message%}
-    <div class="alert alert-success" role="alert">
-      {{message}}
-    </div>
-  {%endif%}
-
-  {%if error%}
-    <div class="alert alert-danger" role="alert">
-      {{error}}
-    </div>
-  {%endif%}
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
