@@ -20,12 +20,12 @@
     </div>
      <form action="http://127.0.0.1:5000/Add_lab_tech_admin" method="POST">
     <div class="container">
-        <div class="container">
+        <div class="container border">
             <h4>Basic Information</h4>
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Username</label>
-                    <input name="Username" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input name="Username" type="string" class="form-control" id="exampleFormControlInput1" placeholder="JohnDoe1">
                 </div>
             </div>
 
@@ -33,47 +33,57 @@
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Email Address</label>
                     <input name="EmailAddress" type="string" class="form-control" id="exampleFormControlInput1"
-                        placeholder="" required>
+                        placeholder="name@example.com">
                 </div>
             </div>
 
             <div class="m-3">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Password</label>
-                    <input name="Password" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input name="Password" type="string" class="form-control" id="exampleFormControlInput1" placeholder="password123">
                 </div>
             </div>
     </div>
-        <div class="container">
+        <div class="container border">
             <h4>Personal Information</h4>
             <div class="row">
                 <div class="col-3">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                        <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                        <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="John">
                     </div>
                 </div>
 
                 <div class="col-3">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-                        <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                        <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Max">
                     </div>
                 </div>
 
                 <div class="col-3">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                        <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                        <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Doe">
                     </div>
                 </div>
 
                 <div class="col-3">
+<!--                    <div class="mt-5 mr-3 mb-3 ml-3">-->
                     <div class="m-3">
-
+<!--                        <div class="dropdown">-->
+<!--                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"-->
+<!--                                data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                                Gender-->
+<!--                            </button>-->
+<!--                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">-->
+<!--                                <li><a class="dropdown-item" href="#">Female</a></li>-->
+<!--                                <li><a class="dropdown-item" href="#">Male</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
                         <label for="exampleFormControlInput1" class="form-label">Gender</label> <br>
-                        <input type="radio" name="Sex" value="male" required>Male
-                        <input type="radio" name="Sex" value="female" required>Female<br>
+                        <input type="radio" name="Sex" value="male">Male
+                        <input type="radio" name="Sex" value="female">Female<br>
                     </div>
                 </div>
             </div>
@@ -82,14 +92,14 @@
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
                         <input name="Birthdate" type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="YYYY/MM/DD" required>
+                            placeholder="YYYY/DD/MM">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Social Security Number</label>
                         <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="" required>
+                            placeholder="1234567890">
 
                 </div>
             </div>
@@ -98,43 +108,118 @@
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Qualifications</label>
                         <input name="CV" type="file" class="form-control" id="exampleFormControlInput1"
-                            placeholder="" required>
+                            placeholder="">
                     </div>
                 </div>
+<!--&lt;!&ndash;                <div class="col-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="m-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label for="exampleFormControlInput1" class="form-label">Passport Number</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input name="PassportNumber" type="string" class="form-control" id="exampleFormControlInput1"&ndash;&gt;-->
+<!--&lt;!&ndash;                            placeholder="1234567890">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <p>Required for foreigners</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
 
+<!--            </div>-->
             <div class="row">
-
+<!--                <div class="col-4">-->
+<!--                    <div class="m-3">-->
+<!--                        <label for="exampleFormControlInput1" class="form-label">Dependents</label>-->
+<!--                        <input type="string" class="form-control" id="exampleFormControlInput1" placeholder="Jack">-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="col-4">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Manager SSN </label>
                         <input name="ManagerSSN" type="string" class="form-control" id="exampleFormControlInput1"
-                            placeholder="" required>
+                            placeholder="1234567890">
                     </div>
                 </div>
+<!--                <div class="col-4">-->
+<!--                    <div class="m-3">-->
+<!--                        <label for="exampleFormControlInput1" class="form-label">Supervisor SSN</label>-->
+<!--                        <input name="SuperSSN" type="string" class="form-control" id="exampleFormControlInput1"-->
+<!--                            placeholder="1234567890">-->
+<!--                        <p>if any</p>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="row">
                     <div class="col-4">
                         <div class="m-3">
                             <label for="exampleFormControlInput1" class="form-label">Salary</label>
                             <input name="Salary" type="string" class="form-control" id="exampleFormControlInput1"
-                                placeholder="" required>
+                                placeholder="1234567890">
                         </div>
                     </div>
                 </div>
             </div>
    </div>
-        
-        <div class="container ">
+        <div class="container border">
+            <h4>Equipment he/she can use</h4>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Serial Number</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Location</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>ABC</td>
+                    <td>X</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>DEF</td>
+                    <td>Y</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="container border">
+            <h4>Tests he/she can perform</h4>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>ABC</td>
+                    <td>X</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>DEF</td>
+                    <td>Y</td>
+                  </tr>
+                </tbody>
+              </table>
+
+        </div>
+        <div class="container border">
             <h4>Contact Information</h4>
             <div class="row">
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Address</label>
                     <input name="Address" type="string" class="form-control" id="exampleFormControlInput1"
-                        placeholder="" required>
+                        placeholder="Street 1 - Building 2 - Apartment 3">
                 </div>
-
+<!--                <div class="col-4">-->
+<!--                    <label for="exampleFormControlInput1" class="form-label">City</label>-->
+<!--                    <input name="City" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Cairo">-->
+<!--                </div>-->
                 <div class="col-4">
                     <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
-                    <input name="PhoneNumber" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                    <input name="PhoneNumber" type="string" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
                 </div>
                 <div class="m-3">
                 </div>
@@ -142,6 +227,7 @@
 
         </div>
         <div class="m-3">
+<!--            <button type="button" class="btn btn-success">Submit</button>-->
             <button type="submit" class="btn btn-success">Submit</button>
 
 
