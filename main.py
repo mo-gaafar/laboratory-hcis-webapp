@@ -646,7 +646,7 @@ def View_employee_admin():
         EmployeeSSN = request.form['EmployeeSSN']
         # Personal info
         mycursor.execute(
-            "SELECT E.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate, E.Supervisor_SSN FROM employee AS E WHERE E.SSN=%s", (EmployeeSSN,))
+            "SELECT E.ID, E.SSN, E.First_Name, E.Middle_Name, E.Last_Name, E.SEX, E.Birthdate,E.Salary, E.Supervisor_SSN FROM employee AS E WHERE E.SSN=%s", (EmployeeSSN,))
         personalinfo = mycursor.fetchall()
         # Basic Info Button
         mycursor.execute(
@@ -765,7 +765,7 @@ def Add_report_labtech():
             mycursor.execute(sql, val)
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message=ReportID + " has been successfully added to the database")
+            return render_template('Home_labtech.html', message=ReportID + " has been successfully added to the database")
         except:
             return render_template('Add_report_labtech.html', error="Invalid input!")
 
@@ -1272,6 +1272,8 @@ def View_employee():
 def ContactUs():
     if request.method == 'GET':
         return render_template("ContactUs.html")
+    else:
+        return redirect('/Home')
 
 
 @app.route('/Add_test', methods=['POST', 'GET'])
@@ -1282,8 +1284,8 @@ def Add_test():
         Test_Name = request.form['Test_Name']
         Category = request.form['Category']
         Value = request.form['Value']
-        Start_Date = request.form['Start_Date']
-        End_Date = request.form['End_Date']
+        # Start_Date = request.form['Start_Date']
+        # End_Date = request.form['End_Date']
         Reference_Range = request.form['Reference_Range']
         Cost = request.form['Cost']
         Patient_SSN = request.form['Patient_SSN']
@@ -1292,8 +1294,8 @@ def Add_test():
         # TODO: ADMIN DOES NOT ADD TEST YET (ADD INPUT TO ADMIN?? OR KEEP IT NULL)
         LabtechSSN = session.get("USERSSN", None)
         try:
-            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Start_Date,End_Date,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (Test_ID, Test_Name, Category, Value, Start_Date, End_Date,
+            sql = "INSERT INTO test(Test_ID,Test_Name,Category,Value,Reference_Range,Cost,Patient_SSN,Report_ID,Lab_No) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (Test_ID, Test_Name, Category, Value,
                    Reference_Range, Cost, Patient_SSN, Report_ID, Lab_No)
             mycursor.execute(sql, val)
             # TODO: ADD TO CONDUCTS RELATIONSHIP (testid and labtech id) using session cookies note:remember quotations in ssn
@@ -1304,7 +1306,7 @@ def Add_test():
 
             mydb.commit()
             # TODO: Fix redirecting in /home route so it can send message or error
-            return render_template('/Home', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
+            return render_template('Home_labtech.html', message="Test "+Test_ID + " has been successfully added to Report " + Report_ID)
         except:
             return render_template('Add_test.html', error="Invalid input!")
 
@@ -1460,7 +1462,7 @@ def View_patient_labtech():
         personalinfo = mycursor.fetchall()
         # Basic Info Button
         mycursor.execute(
-            "SELECT p.SSN, p.First_Name,p.Last_Name,Username,Password, user.Email FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
+            "SELECT p.SSN, p.First_Name,p.Last_Name,Username, user.Email ,Password FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
             (PatientSSN,))
         basicinfo = mycursor.fetchall()
         # Contact Info Button
@@ -1517,7 +1519,7 @@ def View_patient():
         personalinfo = mycursor.fetchall()
         # Basic Info Button
         mycursor.execute(
-            "SELECT p.SSN, p.First_Name,p.Last_Name,Username,Password, user.Email FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
+            "SELECT p.SSN, p.First_Name,p.Last_Name,Username, user.Email,Password FROM patient AS p JOIN user WHERE p.SSN = user.PatientSSN AND p.SSN=%s",
             (PatientSSN,))
         basicinfo = mycursor.fetchall()
         # Contact Info Button

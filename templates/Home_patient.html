@@ -1,33 +1,90 @@
 <!doctype html>
 <html lang="en">
- <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+  <h3>&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+
+
+  <!------------------------------------------------- Picture of the ADMIN --------------------------------------->
+  <style>
+    .card {
+      box-shadow: 8px 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+      position: absolute;
+      left: -24%;
+      z-index: 500;
+      padding: 2px 2px;
+      width: 5000px;
+      transform: translate(-50%, -50%);
+
+    }
+
+
+    .title {
+      color: grey;
+      font-size: 20px;
+    }
+  </style>
+  <!------------------------------------------------- End of Picture of the ADMIN --------------------------------------->
+
 </head>
-  <body>
+
+<body>
   {%extends navbarhtml %}
   {%block content%}
-       <div class="container">
-        <h1>Welcome</h1>
+
+  <div class="container">
+
+    {%if message%}
+    <div class="alert alert-success" role="alert">
+      {{message}}
     </div>
-   {%if message%}
-      <div class="alert alert-success" role="alert">
-        {{message}}
-      </div>
     {%endif%}
 
     {%if error%}
-      <div class="alert alert-danger" role="alert">
-        {{error}}
-      </div>
+    <div class="alert alert-danger" role="alert">
+      {{error}}
+    </div>
     {%endif%}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
- {% endblock %}
-  </body>
+
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    <div class="card">
+
+      <img src="/static/images/Nasser.jpeg" alt="John" style="width:100%">
+
+      {%if message%}
+
+      <h1> {{username}} </h1>
+
+      {%endif%}
+      <p class="title">Patient</p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+
+
+
+  </div>
+  {% endblock %}
+</body>
+
 </html>
