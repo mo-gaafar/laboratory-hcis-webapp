@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="/static/images/icon.jpg">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,31 +19,31 @@
         <h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
     </div>
     <form action="http://127.0.0.1:5000/Add_labtech_dependents_emp" method="POST">
-        <div class="container border">
+        <div class="container">
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Lab Technician SSN</label>
-                <input name="LabtechSSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+                <input name="LabtechSSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
             </div>
             <div class="row">
                 <div class="col-4">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                        <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="John">
+                        <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-                        <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Max">
+                        <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="m-3">
                         <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                        <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Doe">
+                        <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
                     </div>
                 </div>
 
@@ -57,8 +55,8 @@
                   <form method="post">
                     <label for="exampleFormControlInput1" class="form-label">Gender</label> <br>
                     <div class="form-control col-4">
-                        <input type="radio" name="Gender" value="female"> Female
-                        <input type="radio" name="Gender" value="male"> Male
+                        <input type="radio" name="Gender" value="female" required> Female
+                        <input type="radio" name="Gender" value="male" required> Male
                     </div>
                   </form>
                 </div>
@@ -67,22 +65,22 @@
 
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Social Security Number</label>
-                <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+                <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
             </div>
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
-                <input name="Birthdate" type="string" class="form-control" id="exampleFormControlInput1" placeholder="YYYY/DD/MM">
+                <input name="Birthdate" type="string" class="form-control" id="exampleFormControlInput1" placeholder="YYYY/MM/DD">
 
             </div>
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Address</label>
-                <input name="Address" type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+                <input name="Address" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
             </div>
             <div class="col-4 m-3">
                 <label for="exampleFormControlInput1" class="form-label">Relationship</label>
-                <input name="Relationship" type="string" class="form-control" id="exampleFormControlInput1" placeholder="placeholder">
+                <input name="Relationship" type="string" class="form-control" id="exampleFormControlInput1" placeholder="" required>
 
             </div>
             <div class="m-3">

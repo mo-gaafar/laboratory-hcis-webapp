@@ -11,7 +11,7 @@
 
 <body>
 
-   {%extends navbarhtml %}
+    {%extends navbarhtml %}
     {%block content%}
 
     <div class="container mt-5-fluid">
@@ -73,136 +73,153 @@
             </div>
 
 
-            <div class="container mt-6-fluid">
-                <div class="row mt-6-fluid">
-                    <div class="col mt-12">
-                        <p>
-                        <div class="gap-3">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button class="btn btn-success" type="button" data-toggle="collapse"
-                                    data-target="#DeviceInformation" aria-expanded="false"
-                                    aria-controls="DeviceInformation">Device Information</button>
+                    <div class="container mt-6-fluid">
+                        <div class="gap mt-3">
+                            <div class="row mt-3">
+                                <div class="col mt-3-12">
+                                    <div class="col mt-12 bg-light text-right">
+                                        <a href="http://127.0.0.1:5000/Add_consumables" class="btn btn-primary">Add
+                                            Consumables</a>
+                                        <a href="http://127.0.0.1:5000/Add_new_equipment" class="btn btn-primary">Add
+                                            Equipment</a>
+                                            <a href="http://127.0.0.1:5000/viewconsumables" class="btn btn-primary">View Consumables</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <button class="btn btn-success" type="button" data-toggle="collapse"
-                                    data-target="#ManufacturerInformation" aria-expanded="false"
-                                    aria-controls="ManufacturerInformation">Manufacturer Information</button>
 
-                                <button class="btn btn-success" type="button" data-toggle="collapse"
-                                    data-target="#InstitutionalInformation" aria-expanded="false"
-                                    aria-controls="InstitutionalInformation">Institutional Information</button>
+                    <div class="container mt-6-fluid">
+                        <div class="row mt-6-fluid">
+                            <div class="col mt-12">
+                                <p>
+                                <div class="gap-3">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                                            data-target="#DeviceInformation" aria-expanded="false"
+                                            aria-controls="DeviceInformation">Device Information</button>
 
-                                <button class="btn btn-success" type="button" data-toggle="collapse"
-                                    data-target="#TestInformation" aria-expanded="false"
-                                    aria-controls="TestInformation">Test
-                                    Information</button>
+                                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                                            data-target="#ManufacturerInformation" aria-expanded="false"
+                                            aria-controls="ManufacturerInformation">Manufacturer Information</button>
+
+                                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                                            data-target="#InstitutionalInformation" aria-expanded="false"
+                                            aria-controls="InstitutionalInformation">Institutional Information</button>
+
+                                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                                            data-target="#TestInformation" aria-expanded="false"
+                                            aria-controls="TestInformation">Test
+                                            Information</button>
+
+
+                                    </div>
+                                </div>
+
+
+                                </p>
+                                <div class="collapse" id="DeviceInformation">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"> Serial Number </th>
+                                                <th scope="col"> Device Name </th>
+                                                <th scope="col"> Model </th>
+                                        </thead>
+                                        <tbody>
+                                            {% for r in data.DeviceInformation %}
+                                            <tr>
+                                                {% for l in r %}
+                                                <td>{{l}}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                                <div class="collapse" id="ManufacturerInformation">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"> Manufacturer Name </th>
+                                                <th scope="col"> Manufacturer ID </th>
+                                                <th scope="col"> Manufacturing Date </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            {% for r in data.ManufacturerInformation %}
+                                            <tr>
+                                                {% for l in r %}
+                                                <td>{{l}}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="collapse" id="InstitutionalInformation">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"> Department </th>
+                                                <th scope="col"> Inventory ID </th>
+                                                <th scope="col"> Status </th>
+
+                                                <th scope="col"> IPM Maintenance </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            {% for r in data.InstitutionalInformation %}
+                                            <tr>
+                                                {% for l in r %}
+                                                <td>{{l}}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="collapse" id="TestInformation">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"> Name </th>
+                                                <th scope="col"> Type </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            {% for r in data.TestInformation %}
+                                            <tr>
+                                                {% for l in r %}
+                                                <td>{{l}}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
 
 
                             </div>
                         </div>
-
-
-                        </p>
-                        <div class="collapse" id="DeviceInformation">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"> Serial Number </th>
-                                        <th scope="col"> Device Name </th>
-                                        <th scope="col"> Model </th>
-                                </thead>
-                                <tbody>
-                                    {% for r in data.DeviceInformation %}
-                                    <tr>
-                                        {% for l in r %}
-                                        <td>{{l}}</td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-
-                                </tbody>
-
-                            </table>
-                        </div>
-
-                        <div class="collapse" id="ManufacturerInformation">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"> Manufacturer Name </th>
-                                        <th scope="col"> Manufacturer ID </th>
-                                        <th scope="col"> Manufacturing Date </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tbody>
-                                    {% for r in data.ManufacturerInformation %}
-                                    <tr>
-                                        {% for l in r %}
-                                        <td>{{l}}</td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-
-                                </tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="collapse" id="InstitutionalInformation">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"> Department </th>
-                                        <th scope="col"> Inventory ID </th>
-                                        <th scope="col"> Status </th>
-
-                                        <th scope="col"> IPM Maintenance </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tbody>
-                                    {% for r in data.InstitutionalInformation %}
-                                    <tr>
-                                        {% for l in r %}
-                                        <td>{{l}}</td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="collapse" id="TestInformation">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"> Name </th>
-                                        <th scope="col"> Type </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tbody>
-                                    {% for r in data.TestInformation %}
-                                    <tr>
-                                        {% for l in r %}
-                                        <td>{{l}}</td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-
-                                </tbody>
-                            </table>
-                        </div>
-
-
-
-
-
                     </div>
-                </div>
-            </div>
 
 
 
@@ -211,15 +228,15 @@
     </div>
 
 
-        <script src="/static/js/dropdown.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-            integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-            crossorigin="anonymous"></script>
+    <script src="/static/js/dropdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
 
-        {% endblock %}
+    {% endblock %}
 </body>
 
-</html>
+</html>v
