@@ -91,7 +91,7 @@ def charts():
             'may': may,
             'june': june
         }
-        print(data)
+        print(data['april'])
         return render_template('charts.html', data=data)
 
 
