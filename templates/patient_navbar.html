@@ -19,9 +19,9 @@
     :root {
         --offcanvas-width: 270px;
         --topNavbarHeight:56px;
-        --themecolour:rgb(195, 229, 248);
-        --hovertheme:rgb(188, 220, 246);
-        --texttheme:rgb(26, 26, 26);
+        --themecolour:rgb(86, 138, 105);
+        --hovertheme:rgb(109, 162, 128);
+        --texttheme:rgb(255, 255, 255);
     }
     
     .btn-transparent .nav-link.link-danger  {
@@ -110,7 +110,7 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
         </button>
         <!-- OFFCANVAS TRIGGER-->
 
-        <a class="navbar-brand fw-bold me-auto ms-lg-4 ms-1" href="/Home">Hospital HCIS</a>
+        <a class="navbar-brand fw-bold me-auto ms-lg-4 ms-1" href="#">Hospital HCIS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon "></span>
@@ -163,7 +163,7 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
     </button>
 
     <button type="button" class="btn btn-transparent " style="width: 100%;">
-        <a href="/ContactUs" class="nav-item nav-link link-light bold text-start">
+        <a href="#" class="nav-item nav-link link-light bold text-start">
             <span class="p-2 ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat"
                     viewBox="0 0 16 16">
@@ -233,13 +233,88 @@ box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
     -->
 <div class="containerbody">
     
+    
     {% block content %}
 
 
     {% endblock %}
+        
+          
+    <footer style="background-color: rgb(86, 138, 105);">
+        
+        <div class="container">
+          <div class="row ms-5">
+            <div class="col-lg-6 col-md-12 mb-4">
+                <div class="row ms-5">
+              <div class="row ms-5">
+              <h5 class="mb-3 text-light"> About "Hospital name"</h5>
+          </div>
+        </div>
+        <div class="row ms-5">
+                  <p class="ms-5 text-light"> Good Hospital; nodead people,,,,,yet</p>
+              
+                </div> 
+            </div>
+
+            
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="row ms-4">
+              <h5 class="mb-3 text-light">links</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-1">
+                  <a href="#!" style="color: #ffffff;">Contact Us</a>
+                </li>
+                <li class="mb-1">
+                  <a href="#!" style="color: #fff7f7;">Home</a>
+                </li>
+    
+              </ul>
+            </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="row ms-4">
+              <h5 class="mb-1 text-light">Opening Hours</h5>
+              <table class="table" style="border-color: rgb(250, 245, 245);">
+                <tbody>
+                  <tr>
+                    <td><p class="mb-3 text-light">Mon - Fri:</p></td> 
+                    <td><p class="mb-3 text-light">8am - 9pm</p></td> 
+                    
+                  </tr>
+                  <tr>
+                      <td><p class="mb-3 text-light">Sat - Sun</p></td>
+                      <td><p class="mb-3 text-light">8am - 1am</p></td>
+                      
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> 
+        </div> 
+        <div class="container my-auto">
+          <div class="copyright text-light text-center my-auto">
+              <span>Copyright &copy; SBE 2022</span>
+          </div>
+      </div>
+        
+        <!-- Copyright -->
+   
+    </footer>
+          </div>
+     
+
+
+   
+   
+      
+      
 
     
 </div>
+  
+
 
 </body>
 
