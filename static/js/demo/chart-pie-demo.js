@@ -10,7 +10,7 @@ var myPieChart = new Chart(ctx, {
   data: {
     labels: ["Employees", "Patients", "Lab Technicans"],
     datasets: [{
-      data: [data2.countemployee, data2.countpatients, data2.countpatient],
+      data: [70, 15, 25],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
