@@ -1,7 +1,7 @@
 # main.py
 import mysql.connector
 from flask import Flask, redirect, url_for, request, render_template, session, make_response
-
+#alooooo
 from datetime import datetime
 now = datetime.now()
 formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
