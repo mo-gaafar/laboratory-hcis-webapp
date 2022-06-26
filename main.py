@@ -1,16 +1,19 @@
 # main.py
 import mysql.connector
 from flask import Flask, redirect, url_for, request, render_template, session, make_response
-#alooooo
 from datetime import datetime
+
+
 now = datetime.now()
 formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
 
 mydb = mysql.connector.connect(
-    host="hospital-lab.mysql.database.azure.com",
-    user="lab_admin",
-    passwd="tamerbasha.2024",  # write ur own password
-    database="Laboratory_Department"  # here
+    host="localhost",
+    port="49153",
+    user="root",
+    passwd="mysqlpw",  # write ur own password
+    database="laboratory_department",  # here
+    auth_plugin="mysql_native_password"
 )
 
 
@@ -1065,11 +1068,11 @@ def Login():
         Password = request.form['Password']
 
         mycursor.execute(
-            "SELECT Permission_Level FROM User WHERE Email=%s AND Password=%s", (Email, Password))
+            "SELECT Permission_Level FROM user WHERE Email=%s AND Password=%s", (Email, Password))
         permission = mycursor.fetchone()
         if permission:
             mycursor.execute(
-                "SELECT Username FROM User WHERE Email=%s AND Password=%s", (Email, Password))
+                "SELECT Username FROM user WHERE Email=%s AND Password=%s", (Email, Password))
             x = mycursor.fetchone()
             username = x[0]
             # print(username)
