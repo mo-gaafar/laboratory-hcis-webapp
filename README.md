@@ -19,3 +19,7 @@ A full stack web application for hospital lab departments
 ### Patient
 
 ![Patient](/patient.gif)
+
+### Admin
+
+![Admin](/admin.png)

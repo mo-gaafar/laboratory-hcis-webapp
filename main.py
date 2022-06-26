@@ -9,7 +9,7 @@ formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
 
 mydb = mysql.connector.connect(
     host="localhost",
-    port="49153",
+    port="49154",
     user="root",
     passwd="mysqlpw",  # write ur own password
     database="laboratory_department",  # here
